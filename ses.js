@@ -32,6 +32,5 @@ module.exports.sendEmail = (to, text, subject) => {
             },
         })
         .promise()
-        .then(() => console.log("it worked!"))
         .catch((err) => console.log(err));
 };

@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "./axios";
+import { Link } from "react-router-dom";
 
 export default class ResetPassword extends React.Component {
     constructor() {
@@ -14,7 +15,7 @@ export default class ResetPassword extends React.Component {
     }
 
     submit() {
-        axios.post("/reset", this.state).then(({ data }) => {
+        axios.post("/reset/start", this.state).then(({ data }) => {
             console.log("data :>> ", data.success);
             // if (data.success == true) {
             //     location.replace("/");
@@ -29,6 +30,7 @@ export default class ResetPassword extends React.Component {
     render() {
         return (
             <div>
+                <h1>RESET</h1>
                 {this.state.step == 1 && (
                     <div onChange={(e) => this.handleChange(e)}>
                         <input
@@ -43,6 +45,7 @@ export default class ResetPassword extends React.Component {
                         >
                             Submit
                         </button>
+                        <Link to="/login">Login</Link>
                     </div>
                 )}
             </div>

@@ -50,7 +50,7 @@ export default class Login extends React.Component {
                     Login
                 </button>
                 <Link to="/">Click here to Register</Link>
-                <Link to="/reset">Click here to reset your password</Link>
+                <Link to="/reset/start">Click here to reset your password</Link>
             </div>
         );
     }

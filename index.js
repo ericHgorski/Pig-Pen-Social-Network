@@ -95,23 +95,30 @@ app.post("/login", (req, res) => {
         });
 });
 
-app.post("/reset", (req, res) => {
+// First password reset route.
+app.post("/reset/start", (req, res) => {
+    let resetCode;
     let { email } = req.body;
     db.verify(email)
         .then(({ rows }) => {
-            let resetCode = cryptoRandomString({ length: 6 });
-            let email = rows[0].email;
-            db.addResetCode(email, resetCode);
-            res.json({ success: true });
-            sendEmail(
-                email,
-                `Your reset code is ${resetCode}.`,
-                "BookFace Reset Code"
-            );
+            resetCode = cryptoRandomString({ length: 6 });
+            email = rows[0].email;
+            db.addResetCode(email, resetCode)
+                .then(() =>
+                    sendEmail(
+                        email,
+                        `Your reset code is ${resetCode}. It expires in 10 minutes.`,
+                        "BookFace Reset Code"
+                    ).then(() => res.json({ success: true }))
+                )
+                .catch((err) => {
+                    console.log("Error in db.addResetCode: ", err);
+                    res.json({ success: false });
+                });
         })
         .catch((err) => {
-            console.log("Error in reset post request: ", err);
-            res.json({ success: false });
+            console.log("error in email verification: ", err);
+            res.json({ noEmailFound: true });
         });
 });
 
