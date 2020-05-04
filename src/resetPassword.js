@@ -15,15 +15,8 @@ export default class ResetPassword extends React.Component {
     }
 
     submit() {
-        axios.post("/reset/start", this.state).then(({ data }) => {
-            console.log("data :>> ", data.success);
-            // if (data.success == true) {
-            //     location.replace("/");
-            // } else {
-            //     this.setState({
-            //         error: true,
-            //     });
-            // }
+        axios.post("/reset/start", this.state).then((resp) => {
+            console.log("resp :>> ", resp);
         });
     }
 
