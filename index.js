@@ -87,8 +87,6 @@ app.post("/login", (req, res) => {
             if (matchValue) {
                 req.session.userId = id;
                 res.json({ success: true });
-                // } else if (!matchValue) {
-                //     res.json({ success: false });
             }
         })
         .catch((err) => {
@@ -104,6 +102,7 @@ app.post("/reset", (req, res) => {
             let resetCode = cryptoRandomString({ length: 6 });
             let email = rows[0].email;
             db.addResetCode(email, resetCode);
+            res.json({ success: true });
             sendEmail(
                 email,
                 `Your reset code is ${resetCode}.`,
