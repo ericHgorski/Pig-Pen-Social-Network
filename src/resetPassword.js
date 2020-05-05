@@ -16,7 +16,11 @@ export default class ResetPassword extends React.Component {
 
     submit() {
         axios.post("/reset/start", this.state).then((resp) => {
-            console.log("resp :>> ", resp);
+            if (resp.data.success == true) {
+                console.log("IT WORKED!!!!");
+            } else {
+                console.log("not succesful");
+            }
         });
     }
 

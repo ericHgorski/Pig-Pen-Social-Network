@@ -47,15 +47,6 @@ app.get("/welcome", function (req, res) {
     }
 });
 
-// If not a user, direct to welcome, else, serve homepage.
-app.get("*", function (req, res) {
-    if (!req.session.userId) {
-        res.redirect("/welcome");
-    } else {
-        res.sendFile(`${__dirname}/index.html`);
-    }
-});
-
 // Registration post route.
 app.post("/register", (req, res) => {
     let { first, last, email, password } = req.body;
@@ -122,11 +113,50 @@ app.post("/reset/start", (req, res) => {
         });
 });
 
-app.post("/logout", (req, res) => {
-    req.session.userId = null;
-    res.json({ logout: true });
+// If not a user, direct to welcome, else, serve homepage.
+app.get("*", function (req, res) {
+    if (!req.session.userId) {
+        res.redirect("/welcome");
+    } else {
+        res.sendFile(`${__dirname}/index.html`);
+    }
 });
 
 app.listen(8080, function () {
     console.log("I'm listening.");
 });
+
+// // First password reset route -- EXTENDED VERSION.
+// // app.post("/reset/start", (req, res) => {
+// //     let resetCode;
+// //     let { email } = req.body;
+// //     db.verify(email)
+// //         .then(({ rows }) => {
+// //             resetCode = cryptoRandomString({
+// //                 length: 6,
+// //             });
+// //             db.addResetCode(email, resetCode)
+// //                 .then(({ rows }) => {
+// //                     sendEmail(
+// //                         email,
+// //                         `Your reset code is ${resetCode}. It expires in 10 minutes.`,
+// //                         "BookFace Reset Code"
+// //                     )
+// //                         .then(() => {
+// //                             res.json({ success: true });
+// //                         })
+// //                         .catch((err) => {
+// //                             console.log("Error in ses.sendEmail: ", err);
+// //                             res.json({ success: false });
+// //                         });
+// //                 })
+// //                 .catch((err) => {
+// //                     console.log("Error in db.addCode: ", err);
+// //                     res.json({ success: false });
+// //                 });
+// //         })
+// //         .catch((err) => {
+// //             console.log("Error in db.login: ", err);
+// //             res.json({ noEmailFound: true });
+// //         });
+// // });
