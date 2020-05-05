@@ -8,13 +8,31 @@ export default class Uploader extends React.Component {
     }
 
     componentDidMount() {
-        console.log("uploader mounted");
+        console.log("uploader mounted!");
     }
 
+    methodInUploader() {
+        this.props.uploadPic();
+    }
+    handleChange(e) {
+        // Selects the file that was just uploaded.
+        console.log("handleChange has been called");
+        this.file = e.target.files[0];
+    }
     render() {
         return (
             <div>
-                <h2>uploader Component</h2>
+                <input
+                    type="file"
+                    name="file"
+                    accept="image/*"
+                    onChange={(e) => {
+                        this.handleChange(e);
+                    }}
+                />
+                <button className="button" onClick={this.props.uploadPic}>
+                    UPLOAD
+                </button>
             </div>
         );
     }

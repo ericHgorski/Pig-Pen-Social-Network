@@ -43,3 +43,24 @@ module.exports.updatePassword = (email, password) => {
         [email, password]
     );
 };
+
+// Update password upon verification of the reset code.
+module.exports.getUserInfo = (id) => {
+    return db.query(
+        `
+    SELECT * 
+    FROM users 
+    WHERE id = $1;`,
+        [id]
+    );
+};
+
+module.exports.addUserPhoto = (id, image_url) => {
+    return db.query(
+        `
+    UPDATE image_url 
+    SET image_url = $2 
+    WHERE id = $1;`,
+        [id, image_url]
+    );
+};

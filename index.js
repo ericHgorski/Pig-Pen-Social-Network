@@ -7,6 +7,7 @@ const { hash, compare } = require("./bc");
 const csurf = require("csurf");
 const { sendEmail } = require("./ses");
 const cryptoRandomString = require("crypto-random-string");
+const s3 = require("./s3");
 
 // ================ MIDDLEWARE  ================ //
 app.use(compression());
@@ -36,6 +37,29 @@ if (process.env.NODE_ENV != "production") {
 } else {
     app.use("/bundle.js", (req, res) => res.sendFile(`${__dirname}/bundle.js`));
 }
+
+//------------------ IMAGE UPLOAD BOILERPLATE-------------------//
+const multer = require("multer");
+const uidSafe = require("uid-safe");
+const path = require("path");
+
+const diskStorage = multer.diskStorage({
+    destination: function (req, file, callback) {
+        callback(null, __dirname + "/uploads");
+    },
+    filename: function (req, file, callback) {
+        uidSafe(24).then(function (uid) {
+            callback(null, uid + path.extname(file.originalname));
+        });
+    },
+});
+
+const uploader = multer({
+    storage: diskStorage,
+    limits: {
+        fileSize: 5097152,
+    },
+});
 // ================ ROUTES  ================ //
 
 // If a user, redirect to homepage, else, serve welcome.
@@ -135,8 +159,26 @@ app.post("/reset/verify", (req, res) => {
         });
 });
 
+// Get user information.
+app.get("/user", (req, res) => {
+    db.getUserInfo(req.session.userId).then(({ rows }) => res.json(rows[0]));
+});
+
+// Upload new user picture.
+app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
+    req.body.url = `https://s3.amazonaws.com/spicedling/${req.file.filename}`;
+    console.log("req.body :>> ", req.body);
+    if (req.file) {
+        db.addUserPhoto(req.session.userId, req.body.url);
+        res.json(req.body);
+    } else {
+        // If no file is found upon request.
+        res.sendStatus(500);
+    }
+});
+
 // If not a user, direct to welcome, else, serve homepage.
-app.get("*", function (req, res) {
+app.get("*", (req, res) => {
     if (!req.session.userId) {
         res.redirect("/welcome");
     } else {
@@ -144,41 +186,12 @@ app.get("*", function (req, res) {
     }
 });
 
+//Logout functionality.
+app.get("/logout", (req, res) => {
+    req.session = null;
+    res.redirect("/login");
+});
+
 app.listen(8080, function () {
     console.log("I'm listening.");
 });
-
-// // First password reset route -- EXTENDED VERSION.
-// // app.post("/reset/start", (req, res) => {
-// //     let resetCode;
-// //     let { email } = req.body;
-// //     db.verify(email)
-// //         .then(({ rows }) => {
-// //             resetCode = cryptoRandomString({
-// //                 length: 6,
-// //             });
-// //             db.addResetCode(email, resetCode)
-// //                 .then(({ rows }) => {
-// //                     sendEmail(
-// //                         email,
-// //                         `Your reset code is ${resetCode}. It expires in 10 minutes.`,
-// //                         "BookFace Reset Code"
-// //                     )
-// //                         .then(() => {
-// //                             res.json({ success: true });
-// //                         })
-// //                         .catch((err) => {
-// //                             console.log("Error in ses.sendEmail: ", err);
-// //                             res.json({ success: false });
-// //                         });
-// //                 })
-// //                 .catch((err) => {
-// //                     console.log("Error in db.addCode: ", err);
-// //                     res.json({ success: false });
-// //                 });
-// //         })
-// //         .catch((err) => {
-// //             console.log("Error in db.login: ", err);
-// //             res.json({ noEmailFound: true });
-// //         });
-// // });
