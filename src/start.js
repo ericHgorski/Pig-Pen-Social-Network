@@ -1,13 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import Logout from "./logout";
 import Welcome from "./welcome";
+import App from "./app";
 
 let elem;
 const userIsLoggedIn = location.pathname != "/welcome";
 
 if (userIsLoggedIn) {
-    elem = <Logout />;
+    elem = <App />;
 } else {
     elem = <Welcome />;
 }

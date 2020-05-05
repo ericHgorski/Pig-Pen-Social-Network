@@ -24,3 +24,22 @@ module.exports.addResetCode = (email, code) => {
         [email, code]
     );
 };
+
+// Get the most recent reset code associated with the given address.
+module.exports.verifyResetCode = (email) => {
+    return db.query(
+        `SELECT * FROM reset_codes WHERE (CURRENT_TIMESTAMP - timestamp < INTERVAL '10 minutes') AND (email = $1) ORDER BY id DESC LIMIT 1;`,
+        [email]
+    );
+};
+
+// Update password upon verification of the reset code.
+module.exports.updatePassword = (email, password) => {
+    return db.query(
+        `
+    UPDATE users 
+    SET password = $2 
+    WHERE email = $1;`,
+        [email, password]
+    );
+};

@@ -7,6 +7,9 @@ export default class ResetPassword extends React.Component {
         super();
         this.state = {
             step: 1,
+            error: false,
+            mailError: false,
+            codeError: false,
         };
     }
 
@@ -14,12 +17,23 @@ export default class ResetPassword extends React.Component {
         this.setState({ [e.target.name]: e.target.value });
     }
 
-    submit() {
-        axios.post("/reset/start", this.state).then((resp) => {
-            if (resp.data.success == true) {
-                console.log("IT WORKED!!!!");
+    submitEmail() {
+        axios.post("/reset/start", this.state).then(({ data }) => {
+            if (data.success == true) {
+                this.setState({ step: 2 });
+            } else if (data.noEmailFound) {
+                this.setState({ mailError: true });
             } else {
-                console.log("not succesful");
+                this.setState({ error: true });
+            }
+        });
+    }
+    submitResetCode() {
+        axios.post("/reset/verify", this.state).then(({ data }) => {
+            if (data.success == true) {
+                this.setState({ step: 3 });
+            } else {
+                this.setState({ codeError: true });
             }
         });
     }
@@ -32,44 +46,56 @@ export default class ResetPassword extends React.Component {
                     <div onChange={(e) => this.handleChange(e)}>
                         <input
                             name="email"
-                            autoComplete="off"
                             placeholder="email"
                             type="email"
                         ></input>
                         <button
                             className="button"
-                            onClick={() => this.submit()}
+                            onClick={() => this.submitEmail()}
                         >
                             Submit
                         </button>
                         <Link to="/login">Login</Link>
+                        {this.state.error && <div>Something went wrong!</div>}
+                        {this.state.mailError && (
+                            <div>This email was not found.</div>
+                        )}
+                    </div>
+                )}
+                {this.state.step == 2 && (
+                    <div onChange={(e) => this.handleChange(e)}>
+                        <input
+                            name="resetCode"
+                            autoComplete="off"
+                            placeholder="reset code"
+                            type="text"
+                        ></input>
+                        <input
+                            name="newPassword"
+                            autoComplete="off"
+                            placeholder="password"
+                            type="text"
+                        ></input>
+                        <button
+                            className="button"
+                            onClick={() => this.submitResetCode()}
+                        >
+                            Submit
+                        </button>
+                        {this.state.codeError && (
+                            <div>The code you entered was invalid.</div>
+                        )}
+                    </div>
+                )}
+                {this.state.step == 3 && (
+                    <div>
+                        <p>That worked great!</p>
+                        <Link to="/login">
+                            You can now login with your updated password
+                        </Link>
                     </div>
                 )}
             </div>
         );
     }
 }
-
-/* 
-
-                {this.state.step == 2 && (
-                    <div onChange={(e) => this.handleChange(e)}>
-                        <input
-                            name="email"
-                            autoComplete="off"
-                            placeholder="email"
-                            type="email"
-                        ></input>
-                        <h1>STEP 2 BITCH</h1>
-                        <button
-                            className="button"
-                            onClick={() => this.submit()}
-                        >
-                            Submit
-                        </button>
-                    </div>
-                )}
-            </div>
-        );
-    }
-} */

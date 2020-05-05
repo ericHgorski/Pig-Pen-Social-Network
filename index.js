@@ -86,7 +86,7 @@ app.post("/login", (req, res) => {
         });
 });
 
-// First password reset route.
+// Begin the  password reset route.
 app.post("/reset/start", (req, res) => {
     let resetCode;
     let { email } = req.body;
@@ -110,6 +110,28 @@ app.post("/reset/start", (req, res) => {
         .catch((err) => {
             console.log("error in email verification: ", err);
             res.json({ noEmailFound: true });
+        });
+});
+
+// Verify authenticity of given reset code.
+app.post("/reset/verify", (req, res) => {
+    let { email, resetCode, newPassword } = req.body;
+    db.verifyResetCode(email)
+        .then(({ rows }) => {
+            if (resetCode == rows[0].code) {
+                hash(newPassword).then((hashedPW) => {
+                    db.updatePassword(email, hashedPW)
+                        .then(() => res.json({ success: true }))
+                        .catch((err) =>
+                            console.log("error in db.updated password: ", err)
+                        );
+                });
+            } else {
+                res.json({ codeError: true });
+            }
+        })
+        .catch((err) => {
+            console.log("error in db.verifyResetCode verification :", err);
         });
 });
 
