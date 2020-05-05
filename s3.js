@@ -6,6 +6,7 @@ if (process.env.NODE_ENV == "production") {
     secrets = process.env;
 } else {
     secrets = require("./secrets");
+    console.log("secrets :>> ", secrets);
 }
 
 const s3 = new aws.S3({

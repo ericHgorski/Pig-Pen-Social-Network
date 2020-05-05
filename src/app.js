@@ -23,26 +23,13 @@ export default class App extends React.Component {
             uploaderIsVisible: !this.state.uploaderIsVisible,
         });
     }
-
-    uploadPic() {
-        // FormData required because of file upload.
-        var formData = new FormData();
-        formData.append("file", this.file);
-
-        // Axios post request to send image data as response to be rendered by change to data images array.
-        axios
-            .post("/upload", formData)
-            .then(({ data }) => {
-                console.log("data from uploadPic :>> ", data);
-                this.userInfo.setState({ image_url: data });
-            })
-            .catch(function (err) {
-                console.log("error in post /upload: ", err);
-            });
+    setPhoto(arg) {
+        this.userInfo.image_url.setState({ image_url: arg });
     }
 
     render() {
-        const { first, last, imageUrl } = this.state.userInfo;
+        const { first, last, image_url } = this.state.userInfo;
+        console.log("image_url :>> ", image_url);
         return (
             <div>
                 <h1>Welcome to your user profile.</h1>
@@ -50,10 +37,13 @@ export default class App extends React.Component {
                     Change profile picture.
                 </button>
 
-                <ProfilePic first={first} last={last} imageUrl={imageUrl} />
+                <ProfilePic first={first} last={last} image_url={image_url} />
 
                 {this.state.uploaderIsVisible && (
-                    <Uploader methodInApp={this.methodInApp} />
+                    <Uploader
+                        toggleModal={this.toggleModal}
+                        setPhoto={this.setPhoto}
+                    />
                 )}
             </div>
         );

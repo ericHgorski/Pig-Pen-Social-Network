@@ -166,11 +166,12 @@ app.get("/user", (req, res) => {
 
 // Upload new user picture.
 app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
-    req.body.url = `https://s3.amazonaws.com/spicedling/${req.file.filename}`;
+    req.body.image_url = `https://s3.amazonaws.com/spicedling/${req.file.filename}`;
     console.log("req.body :>> ", req.body);
     if (req.file) {
-        db.addUserPhoto(req.session.userId, req.body.url);
-        res.json(req.body);
+        db.addUserPhoto(req.session.userId, req.body.image_url).then(() =>
+            res.json(req.body)
+        );
     } else {
         // If no file is found upon request.
         res.sendStatus(500);
