@@ -178,6 +178,12 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
     }
 });
 
+//Logout functionality.
+app.get("/logout", (req, res) => {
+    req.session = null;
+    res.redirect("/login");
+});
+
 // If not a user, direct to welcome, else, serve homepage.
 app.get("*", (req, res) => {
     if (!req.session.userId) {
@@ -185,12 +191,6 @@ app.get("*", (req, res) => {
     } else {
         res.sendFile(`${__dirname}/index.html`);
     }
-});
-
-//Logout functionality.
-app.get("/logout", (req, res) => {
-    req.session = null;
-    res.redirect("/login");
 });
 
 app.listen(8080, () => {

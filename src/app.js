@@ -1,7 +1,8 @@
 import React from "react";
 import axios from "./axios";
-import ProfilePic from "./profilePic";
+import ProfilePic from "./profilepic";
 import Uploader from "./uploader";
+import Logout from "./logout";
 
 export default class App extends React.Component {
     constructor() {
@@ -24,11 +25,12 @@ export default class App extends React.Component {
         });
     }
     setPhoto(imgUrl) {
-        this.userInfo.setState({
-            image_url: imgUrl,
-        });
         this.setState({
             uploaderIsVisible: false,
+            userInfo: {
+                ...this.state.userInfo,
+                image_url: imgUrl,
+            },
         });
     }
 
@@ -40,15 +42,14 @@ export default class App extends React.Component {
                 <button className="button" onClick={() => this.toggleModal()}>
                     Change picture.
                 </button>
-
                 <ProfilePic first={first} last={last} image_url={image_url} />
-
                 {this.state.uploaderIsVisible && (
                     <Uploader
                         toggleModal={this.toggleModal}
                         setPhoto={this.setPhoto}
                     />
                 )}
+                <Logout />
             </div>
         );
     }
