@@ -23,18 +23,22 @@ export default class App extends React.Component {
             uploaderIsVisible: !this.state.uploaderIsVisible,
         });
     }
-    setPhoto(arg) {
-        this.userInfo.image_url.setState({ image_url: arg });
+    setPhoto(imgUrl) {
+        this.userInfo.setState({
+            image_url: imgUrl,
+        });
+        this.setState({
+            uploaderIsVisible: false,
+        });
     }
 
     render() {
         const { first, last, image_url } = this.state.userInfo;
-        console.log("image_url :>> ", image_url);
         return (
             <div>
                 <h1>Welcome to your user profile.</h1>
                 <button className="button" onClick={() => this.toggleModal()}>
-                    Change profile picture.
+                    Change picture.
                 </button>
 
                 <ProfilePic first={first} last={last} image_url={image_url} />

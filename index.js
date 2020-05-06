@@ -22,7 +22,7 @@ app.use(
 
 app.use(csurf());
 
-app.use(function (req, res, next) {
+app.use((req, res, next) => {
     res.cookie("mytoken", req.csrfToken());
     next();
 });
@@ -63,7 +63,7 @@ const uploader = multer({
 // ================ ROUTES  ================ //
 
 // If a user, redirect to homepage, else, serve welcome.
-app.get("/welcome", function (req, res) {
+app.get("/welcome", (req, res) => {
     if (req.session.userId) {
         res.redirect("/");
     } else {
@@ -193,6 +193,6 @@ app.get("/logout", (req, res) => {
     res.redirect("/login");
 });
 
-app.listen(8080, function () {
+app.listen(8080, () => {
     console.log("I'm listening.");
 });

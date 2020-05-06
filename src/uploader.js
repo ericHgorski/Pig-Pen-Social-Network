@@ -3,12 +3,10 @@ import axios from "./axios";
 
 export default class Uploader extends React.Component {
     constructor(props) {
-        super();
+        super(props);
         this.state = {
             file: null,
         };
-        console.log("props :>> ", props);
-        console.log("this.state :>> ", this.state);
     }
 
     componentDidMount() {
@@ -31,12 +29,10 @@ export default class Uploader extends React.Component {
         axios
             .post("/upload", formData)
             .then(({ data }) => {
-                console.log("props in uploadpic :>> ", this.props);
-                console.log("data :>> ", data.image_url);
+                console.log("data.image_url", data.image_url);
                 this.props.setPhoto(data.image_url);
-                this.props.toggleModal();
             })
-            .catch(function (err) {
+            .catch((err) => {
                 console.log("error in post /upload: ", err);
             });
     }
