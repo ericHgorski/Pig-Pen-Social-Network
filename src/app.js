@@ -9,7 +9,7 @@ export default class App extends React.Component {
         super();
         this.state = {
             uploaderIsVisible: false,
-            userInfo: {},
+            // userInfo: {},
         };
         this.toggleModal = this.toggleModal.bind(this);
         this.setPhoto = this.setPhoto.bind(this);
@@ -17,6 +17,7 @@ export default class App extends React.Component {
 
     componentDidMount() {
         axios.get("/user", this.state).then(({ data }) => {
+            console.log("App -> componentDidMount -> data", data);
             this.setState({ userInfo: data });
         });
     }
@@ -47,7 +48,7 @@ export default class App extends React.Component {
 
                 <Profile
                     // onClick={this.toggleModal}
-                    userInfo={{ ...this.state.userInfo }}
+                    userInfo={this.state.userInfo}
                     // image_url={image_url}
                     // toggleModal={this.toggleModal}
                 />
