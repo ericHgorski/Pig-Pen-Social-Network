@@ -7,6 +7,7 @@ export default class Uploader extends React.Component {
         this.state = {
             file: null,
         };
+        console.log("props in uploader ", props);
     }
 
     componentDidMount() {
@@ -29,7 +30,6 @@ export default class Uploader extends React.Component {
         axios
             .post("/upload", formData)
             .then(({ data }) => {
-                console.log("data.image_url", data.image_url);
                 this.props.setPhoto(data.image_url);
             })
             .catch((err) => {

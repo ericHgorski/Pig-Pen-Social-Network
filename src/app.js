@@ -1,8 +1,8 @@
 import React from "react";
 import axios from "./axios";
-import ProfilePic from "./profilepic";
 import Uploader from "./uploader";
 import Logout from "./logout";
+import Profile from "./profile";
 
 export default class App extends React.Component {
     constructor() {
@@ -11,6 +11,8 @@ export default class App extends React.Component {
             uploaderIsVisible: false,
             userInfo: {},
         };
+        this.toggleModal = this.toggleModal.bind(this);
+        this.setPhoto = this.setPhoto.bind(this);
     }
 
     componentDidMount() {
@@ -35,14 +37,21 @@ export default class App extends React.Component {
     }
 
     render() {
-        const { first, last, image_url } = this.state.userInfo;
+        console.log("...this.state in app render", { ...this.state });
         return (
             <div>
                 <h1>Welcome to your user profile.</h1>
                 <button className="button" onClick={() => this.toggleModal()}>
                     Change picture.
                 </button>
-                <ProfilePic first={first} last={last} image_url={image_url} />
+
+                <Profile
+                    // onClick={this.toggleModal}
+                    userInfo={{ ...this.state.userInfo }}
+                    // image_url={image_url}
+                    // toggleModal={this.toggleModal}
+                />
+
                 {this.state.uploaderIsVisible && (
                     <Uploader
                         toggleModal={this.toggleModal}
