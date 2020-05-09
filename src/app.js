@@ -3,6 +3,7 @@ import axios from "./axios";
 import Uploader from "./uploader";
 import Logout from "./logout";
 import Profile from "./profile";
+import OtherProfile from "./otherprofile";
 import { BrowserRouter, Route } from "react-router-dom";
 
 export default class App extends Component {
@@ -12,7 +13,6 @@ export default class App extends Component {
             uploaderIsVisible: false,
             editingMode: false,
         };
-        this.setImage = this.setImage.bind(this);
     }
 
     async componentDidMount() {
@@ -47,29 +47,27 @@ export default class App extends Component {
 
     render() {
         return (
-            <>
-                <BrowserRouter>
-                    <>
-                        <h1>Welcome to your user profile.</h1>
-                        <Route
-                            exact
-                            path="/"
-                            render={() => (
-                                <Profile
-                                    userInfo={this.state.userInfo}
-                                    toggleUploader={() => this.toggleUploader()}
-                                    saveBio={() => this.saveBio()}
-                                />
-                            )}
-                        />
-
-                        {this.state.uploaderIsVisible && (
-                            <Uploader setImage={this.setImage} />
+            <BrowserRouter>
+                <>
+                    <Route
+                        exact
+                        path="/"
+                        render={() => (
+                            <Profile
+                                userInfo={this.state.userInfo}
+                                toggleUploader={() => this.toggleUploader()}
+                                saveBio={(text) => this.saveBio(text)}
+                            />
                         )}
-                        <Logout />
-                    </>
-                </BrowserRouter>
-            </>
+                    />
+                    <Route exact path="/user/:id" component={OtherProfile} />
+
+                    {this.state.uploaderIsVisible && (
+                        <Uploader setImage={(url) => this.setImage(url)} />
+                    )}
+                    <Logout />
+                </>
+            </BrowserRouter>
         );
     }
 }

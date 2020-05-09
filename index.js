@@ -159,9 +159,14 @@ app.post("/reset/verify", (req, res) => {
         });
 });
 
-// Get user information.
+// Get logged in user information.
 app.get("/user", (req, res) => {
     db.getUserInfo(req.session.userId).then(({ rows }) => res.json(rows[0]));
+});
+
+// Get other user information.
+app.get("/api/user/:id", (req, res) => {
+    db.getUserInfo(req.params.id).then(({ rows }) => res.json(rows[0]));
 });
 
 // Upload new user picture.
@@ -183,7 +188,7 @@ app.post("/save-bio", async (req, res) => {
     console.log("req.body.draftBio :>> ", req.body.draftBio);
     if (req.body.draftBio) {
         db.addUserBio(req.session.userId, req.body.draftBio).then(({ rows }) =>
-            res.json({ bio: rows[0].bio })
+            res.json({ success: true })
         );
     } else {
         res.json({ bioError: true });
