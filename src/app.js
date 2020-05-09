@@ -35,11 +35,12 @@ export default class App extends Component {
         });
     }
 
-    saveBio(bioText) {
+    saveBio(text) {
+        console.log("bioText in save bio in app js:>> ", text);
         this.setState({
             userInfo: {
                 ...this.state.userInfo,
-                bio: bioText,
+                bio: text,
             },
         });
     }
@@ -56,20 +57,14 @@ export default class App extends Component {
                             render={() => (
                                 <Profile
                                     userInfo={this.state.userInfo}
-                                    last={this.state.last}
-                                    imageUrl={this.state.imageUrl}
                                     toggleUploader={() => this.toggleUploader()}
                                     saveBio={() => this.saveBio()}
-                                    bio={this.state.bio}
                                 />
                             )}
                         />
 
                         {this.state.uploaderIsVisible && (
-                            <Uploader
-                                toggleUploader={this.toggleUploader}
-                                setImage={this.setImage}
-                            />
+                            <Uploader setImage={this.setImage} />
                         )}
                         <Logout />
                     </>

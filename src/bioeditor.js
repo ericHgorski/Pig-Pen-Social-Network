@@ -13,19 +13,27 @@ export default class BioEditor extends Component {
         this.setState({ [e.target.name]: e.target.value });
     }
 
+    toggleBioEditor() {
+        this.setState({
+            editMode: !this.state.editMode,
+        });
+    }
+
     setBio() {
         this.setState({
             editMode: false,
         });
-        axios.post("/save-bio", this.state).then(({ data }) => {
-            this.props.saveBio(data.bio);
-            console.log(data.bio);
-        });
-        // console.log("data in setBio, bioeditor :>> ", result.data.draftBio);
-        // this.props.saveBio(result);
-    }
-    catch(e) {
-        console.log("error in setBio in bioeditor: ", e);
+        axios
+            .post("/save-bio", this.state)
+            .then(({ data }) => {
+                console.log(
+                    "this.props in axios save bio post :>> ",
+                    this.props
+                );
+                console.log(data.bio);
+                this.props.saveBio(data.bio);
+            })
+            .catch((e) => console.log("Error in axios/post/save-bio: ", e));
     }
 
     // Render for three cases: 1) No bio is set, 2) bio is set, 3) bio is being edited
