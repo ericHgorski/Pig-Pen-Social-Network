@@ -177,6 +177,19 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
     }
 });
 
+// Save user bio.
+app.post("/save-bio", async (req, res) => {
+    console.log("req.body :>> ", req.body);
+    console.log("req.body.draftBio :>> ", req.body.draftBio);
+    if (req.body.draftBio) {
+        db.addUserBio(req.session.userId, req.body.draftBio).then(({ rows }) =>
+            res.json({ bio: rows[0].bio })
+        );
+    } else {
+        res.json({ bioError: true });
+    }
+});
+
 //Logout functionality.
 app.get("/logout", (req, res) => {
     req.session = null;

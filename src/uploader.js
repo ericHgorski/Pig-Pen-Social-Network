@@ -1,21 +1,15 @@
-import React from "react";
+import React, { Component } from "react";
 import axios from "./axios";
 
-export default class Uploader extends React.Component {
+export default class Uploader extends Component {
     constructor(props) {
         super(props);
         this.state = {
             file: null,
         };
-        console.log("props in uploader ", props);
-    }
-
-    componentDidMount() {
-        console.log("uploader mounted!");
     }
 
     handleChange(e) {
-        console.log("e.target.files[0] :>> ", e.target.files[0]);
         this.setState({
             file: e.target.files[0],
         });
@@ -30,7 +24,7 @@ export default class Uploader extends React.Component {
         axios
             .post("/upload", formData)
             .then(({ data }) => {
-                this.props.setPhoto(data.image_url);
+                this.props.setImage(data.image_url);
             })
             .catch((err) => {
                 console.log("error in post /upload: ", err);

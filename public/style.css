@@ -1,6 +1,8 @@
 * {
     font-family: "Helvetica Neue";
     box-sizing: border-box;
+    background-color: rgb(66, 103, 178);
+    color: whitesmoke;
 }
 
 .header {
@@ -11,10 +13,10 @@
 .reg-container {
     display: flex;
     flex-direction: column;
-    border: red solid 1px;
-    margin: 12% auto;
+    border: white solid 5px;
+    margin: 5% auto;
     width: 300px;
-    padding: 20px;
+    padding: 10px;
     align-items: center;
 }
 
@@ -22,6 +24,12 @@
     margin: 20px;
     height: 30px;
     width: 240px;
+    background-color: whitesmoke;
+}
+
+input {
+    background-color: whitesmoke;
+    color: black;
 }
 
 .button {
@@ -37,4 +45,16 @@
 .button:hover {
     background: linear-gradient(to bottom, #68a54b 5%, #74ad5a 100%);
     background-color: #68a54b;
+}
+
+::placeholder {
+    text-transform: uppercase;
+}
+
+textarea {
+    background-color: whitesmoke;
+    height: 80px;
+    width: 200px;
+    color: black;
+    font-size: large;
 }

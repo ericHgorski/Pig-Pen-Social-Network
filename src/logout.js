@@ -1,6 +1,6 @@
-import React from "react";
+import React, { Component } from "react";
 
-export default class Logout extends React.Component {
+export default class Logout extends Component {
     constructor() {
         super();
     }

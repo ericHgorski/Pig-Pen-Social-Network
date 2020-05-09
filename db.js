@@ -64,3 +64,14 @@ module.exports.addUserPhoto = (id, image_url) => {
         [id, image_url]
     );
 };
+
+module.exports.addUserBio = (id, bioText) => {
+    return db.query(
+        `
+    UPDATE users 
+    SET bio = $2 
+    WHERE id = $1
+    RETURNING bio;`,
+        [id, bioText]
+    );
+};
