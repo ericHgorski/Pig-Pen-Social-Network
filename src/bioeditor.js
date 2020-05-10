@@ -1,5 +1,15 @@
 import React, { Component } from "react";
+import Button from "./components/button";
 import axios from "./axios";
+import styled from "styled-components";
+
+const StyledTextarea = styled.textarea`
+    background-color: whitesmoke;
+    height: 80px;
+    width: 200px;
+    color: black;
+    font-size: large;
+`;
 
 export default class BioEditor extends Component {
     constructor(props) {
@@ -39,11 +49,12 @@ export default class BioEditor extends Component {
             <>
                 {this.state.editMode && (
                     <div id="edit-bio">
-                        <textarea
+                        <StyledTextarea
                             name="draftBio"
                             defaultValue={this.props.bio}
                             onChange={(e) => this.handleChange(e)}
-                        ></textarea>
+                        ></StyledTextarea>
+                        <br></br>
                         <button
                             className="button"
                             onClick={(e) => this.setBio(e)}

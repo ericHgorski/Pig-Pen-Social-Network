@@ -2,20 +2,12 @@
     font-family: "Helvetica Neue";
     box-sizing: border-box;
     background-color: gainsboro;
+    margin: 0;
 }
 
 .header {
     display: flex;
     justify-content: center;
-}
-navbar {
-    min-width: 100%;
-    border: red solid 30px;
-}
-
-#logo-small {
-    position: absolute;
-    right: 0;
 }
 
 .reg-container {
@@ -40,29 +32,6 @@ input {
     color: black;
 }
 
-.button {
-    background: linear-gradient(to bottom, #74ad5a 5%, #68a54b 100%);
-    background-color: #6aa150;
-    font-size: 14px;
-    font-weight: bold;
-    border: 1px solid #34661b;
-    cursor: pointer;
-    color: #ffffff;
-    max-width: 100px;
-}
-.button:hover {
-    background: linear-gradient(to bottom, #68a54b 5%, #74ad5a 100%);
-    background-color: #68a54b;
-}
-
 ::placeholder {
     text-transform: uppercase;
-}
-
-textarea {
-    background-color: whitesmoke;
-    height: 80px;
-    width: 200px;
-    color: black;
-    font-size: large;
 }
