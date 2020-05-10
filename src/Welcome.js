@@ -7,7 +7,6 @@ import ResetPassword from "./reset";
 export default function Welcome() {
     return (
         <div>
-            <h1 className="header">Welcome to Bookface</h1>
             <HashRouter>
                 <div>
                     <Route exact path="/" component={Registration} />

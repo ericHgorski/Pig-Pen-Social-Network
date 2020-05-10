@@ -71,7 +71,14 @@ module.exports.addUserBio = (id, bioText) => {
     UPDATE users 
     SET bio = $2 
     WHERE id = $1
-    RETURNING bio;`,
+    RETURNING bio, id;`,
         [id, bioText]
+    );
+};
+
+module.exports.getAllUserIds = () => {
+    return db.query(
+        `SELECT id FROM users;
+    `
     );
 };

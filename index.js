@@ -164,9 +164,21 @@ app.get("/user", (req, res) => {
     db.getUserInfo(req.session.userId).then(({ rows }) => res.json(rows[0]));
 });
 
-// Get other user information.
+// Get other user information and id of logged in user.
 app.get("/api/user/:id", (req, res) => {
-    db.getUserInfo(req.params.id).then(({ rows }) => res.json(rows[0]));
+    db.getAllUserIds().then(({ rows }) => {
+        // get all user Ids to send 4o4 if user not found.
+        const allIds = rows.map(({ id }) => id);
+        if (allIds.includes(parseInt(req.params.id))) {
+            db.getUserInfo(req.params.id).then(({ rows }) => {
+                const profileData = rows[0];
+                profileData.loggedInUserId = req.session.userId;
+                res.json(profileData);
+            });
+        } else {
+            res.json({ userNotFound: true });
+        }
+    });
 });
 
 // Upload new user picture.

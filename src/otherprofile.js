@@ -1,10 +1,11 @@
 import React, { Component } from "react";
+import PageNotFound from "./pagenotfound.js";
 import axios from "./axios";
 
 class OtherProfile extends Component {
     constructor(props) {
         super(props);
-        this.state = { userInfo: {} };
+        this.state = { userInfo: {}, userNotFound: false };
     }
 
     async componentDidMount() {
@@ -12,14 +13,21 @@ class OtherProfile extends Component {
             `/api/user/${this.props.match.params.id}`,
             this.state
         );
-        console.log("data :>> ", data);
-        this.setState({ userInfo: data });
+        // If logged in user tries to visit own profile, redirect to profile component
+        if (this.props.match.params.id == data.loggedInUserId) {
+            this.props.history.push("/");
+        } else if (data.userNotFound) {
+            this.setState({ userNotFound: true });
+        } else {
+            this.setState({ userInfo: data });
+        }
     }
 
     render() {
         const { bio, image_url, first, last } = this.state.userInfo;
         return (
             <>
+                {this.state.userNotFound && <PageNotFound />}
                 <div className="profile">
                     <h2>
                         {first} {last}

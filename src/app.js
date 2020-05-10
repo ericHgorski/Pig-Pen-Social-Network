@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import axios from "./axios";
 import Uploader from "./uploader";
-import Logout from "./logout";
 import Profile from "./profile";
 import OtherProfile from "./otherprofile";
+import Navbar from "./navbar";
 import { BrowserRouter, Route } from "react-router-dom";
 
 export default class App extends Component {
@@ -11,7 +11,6 @@ export default class App extends Component {
         super();
         this.state = {
             uploaderIsVisible: false,
-            editingMode: false,
         };
     }
 
@@ -36,7 +35,6 @@ export default class App extends Component {
     }
 
     saveBio(text) {
-        console.log("bioText in save bio in app js:>> ", text);
         this.setState({
             userInfo: {
                 ...this.state.userInfo,
@@ -49,6 +47,7 @@ export default class App extends Component {
         return (
             <BrowserRouter>
                 <>
+                    <Navbar />
                     <Route
                         exact
                         path="/"
@@ -60,12 +59,20 @@ export default class App extends Component {
                             />
                         )}
                     />
-                    <Route exact path="/user/:id" component={OtherProfile} />
+                    <Route
+                        path="/user/:id"
+                        render={(props) => (
+                            <OtherProfile
+                                key={props.match.url}
+                                match={props.match}
+                                history={props.history}
+                            />
+                        )}
+                    />
 
                     {this.state.uploaderIsVisible && (
                         <Uploader setImage={(url) => this.setImage(url)} />
                     )}
-                    <Logout />
                 </>
             </BrowserRouter>
         );

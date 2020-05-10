@@ -1,19 +1,27 @@
 * {
     font-family: "Helvetica Neue";
     box-sizing: border-box;
-    background-color: rgb(66, 103, 178);
-    color: whitesmoke;
+    background-color: gainsboro;
 }
 
 .header {
     display: flex;
     justify-content: center;
 }
+navbar {
+    min-width: 100%;
+    border: red solid 30px;
+}
+
+#logo-small {
+    position: absolute;
+    right: 0;
+}
 
 .reg-container {
     display: flex;
     flex-direction: column;
-    border: white solid 5px;
+    border: rgb(255, 156, 200) solid 5px;
     margin: 5% auto;
     width: 300px;
     padding: 10px;

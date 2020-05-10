@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "./axios";
 import { Link } from "react-router-dom";
+import Logo from "./logo";
 
 export default class Registration extends React.Component {
     constructor() {
@@ -32,6 +33,7 @@ export default class Registration extends React.Component {
                 onChange={(e) => this.handleChange(e)}
                 className="reg-container"
             >
+                <Logo />
                 <h3>Registration</h3>
                 {this.state.error && <div>Oops something went wrong!</div>}
                 <input
