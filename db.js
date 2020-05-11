@@ -92,7 +92,7 @@ module.exports.getRecentUsers = () => {
 
 module.exports.getMatchingUsers = (val) => {
     return db.query(
-        `SELECT first FROM users 
+        `SELECT * FROM users 
     WHERE first 
     ILIKE $1;`,
         [val + "%"]

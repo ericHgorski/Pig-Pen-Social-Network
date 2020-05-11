@@ -170,9 +170,8 @@ app.get("/api/users", (req, res) => {
 });
 
 //Get users that match search criteria in FindPeople component
-app.get("/api/matching-users", (req, res) => {
-    console.log("req.body :>> ", req.body);
-    db.getMatchingUsers().then((result) => res.json(result));
+app.post("/api/matching-users", (req, res) => {
+    db.getMatchingUsers(req.body.userSearch).then((result) => res.json(result));
 });
 
 // Get other user information and id of logged in user.
