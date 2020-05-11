@@ -164,6 +164,17 @@ app.get("/user", (req, res) => {
     db.getUserInfo(req.session.userId).then(({ rows }) => res.json(rows[0]));
 });
 
+// Get information about new users.
+app.get("/api/users", (req, res) => {
+    db.getRecentUsers().then((result) => res.json(result));
+});
+
+//Get users that match search criteria in FindPeople component
+app.get("/api/matching-users", (req, res) => {
+    console.log("req.body :>> ", req.body);
+    db.getMatchingUsers().then((result) => res.json(result));
+});
+
 // Get other user information and id of logged in user.
 app.get("/api/user/:id", (req, res) => {
     db.getAllUserIds().then(({ rows }) => {
@@ -172,6 +183,7 @@ app.get("/api/user/:id", (req, res) => {
         if (allIds.includes(parseInt(req.params.id))) {
             db.getUserInfo(req.params.id).then(({ rows }) => {
                 const profileData = rows[0];
+                // add loggedIn userId to prevent from seeing own profile
                 profileData.loggedInUserId = req.session.userId;
                 res.json(profileData);
             });
@@ -195,11 +207,9 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
 });
 
 // Save user bio.
-app.post("/save-bio", async (req, res) => {
-    console.log("req.body :>> ", req.body);
-    console.log("req.body.draftBio :>> ", req.body.draftBio);
+app.post("/save-bio", (req, res) => {
     if (req.body.draftBio) {
-        db.addUserBio(req.session.userId, req.body.draftBio).then(({ rows }) =>
+        db.addUserBio(req.session.userId, req.body.draftBio).then(() =>
             res.json({ success: true })
         );
     } else {

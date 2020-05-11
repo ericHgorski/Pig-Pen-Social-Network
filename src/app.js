@@ -3,6 +3,7 @@ import axios from "./axios";
 import Uploader from "./uploader";
 import Profile from "./profile";
 import OtherProfile from "./otherprofile";
+import FindPeople from "./findpeople";
 import Navbar from "./navbar";
 import { BrowserRouter, Route } from "react-router-dom";
 
@@ -66,6 +67,16 @@ export default class App extends Component {
                                 key={props.match.url}
                                 match={props.match}
                                 history={props.history}
+                            />
+                        )}
+                    />
+                    <Route
+                        path="/users"
+                        render={(props) => (
+                            <FindPeople
+                            // key={props.match.url}
+                            // match={props.match}
+                            // history={props.history}
                             />
                         )}
                     />

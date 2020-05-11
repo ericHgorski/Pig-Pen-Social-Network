@@ -82,3 +82,19 @@ module.exports.getAllUserIds = () => {
     `
     );
 };
+
+module.exports.getRecentUsers = () => {
+    return db.query(
+        `SELECT * FROM users ORDER BY id DESC LIMIT 3;
+    `
+    );
+};
+
+module.exports.getMatchingUsers = (val) => {
+    return db.query(
+        `SELECT first FROM users 
+    WHERE first 
+    ILIKE $1;`,
+        [val + "%"]
+    );
+};

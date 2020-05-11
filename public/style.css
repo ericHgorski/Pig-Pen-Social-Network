@@ -35,3 +35,7 @@ input {
 ::placeholder {
     text-transform: uppercase;
 }
+
+.find-people-user {
+    border: black solid 3px;
+}

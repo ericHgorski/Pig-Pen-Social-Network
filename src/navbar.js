@@ -17,6 +17,7 @@ export default function Navbar() {
         <StyledNavbar>
             <Logout />
             <Link to="/">My Profile</Link>
+            <Link to="/users">Find Friends</Link>
             <Logo />
         </StyledNavbar>
     );
