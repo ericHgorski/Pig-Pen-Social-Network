@@ -164,14 +164,23 @@ app.get("/user", (req, res) => {
     db.getUserInfo(req.session.userId).then(({ rows }) => res.json(rows[0]));
 });
 
-// Get information about new users.
-app.get("/api/users", (req, res) => {
-    db.getRecentUsers().then((result) => res.json(result));
-});
-
-//Get users that match search criteria in FindPeople component
-app.post("/api/matching-users", (req, res) => {
-    db.getMatchingUsers(req.body.userSearch).then((result) => res.json(result));
+// If search parameter, get most corresponding users, else, get most recent users.
+app.get("/api/users/:user", async (req, res) => {
+    if (req.params.user == "recentUsers") {
+        try {
+            const result = await db.getRecentUsers();
+            res.json(result);
+        } catch (err) {
+            console.log("Error in get recent users app.get request: ", err);
+        }
+    } else {
+        try {
+            const result = await db.getMatchingUsers(req.params.user);
+            res.json(result);
+        } catch (err) {
+            console.log("Error in get matching users app.get request: ", err);
+        }
+    }
 });
 
 // Get other user information and id of logged in user.

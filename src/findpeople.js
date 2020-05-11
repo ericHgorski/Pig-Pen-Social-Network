@@ -1,26 +1,26 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import axios from "./axios";
 
 export default function FindPeople() {
     const [users, setUsers] = useState([]);
     const [userSearch, setUserSearch] = useState("");
+    // On mount, show three most recent users, if user searches,
+    // show users that match with search. Also ignore if return is out of order.
     useEffect(() => {
-        async function getRecentUsers() {
-            try {
-                const { data } = await axios.get("/api/users");
-                setUsers(data.rows);
-            } catch (e) {
-                console.log("error in find people axios get: ", e);
-            }
-        }
-        getRecentUsers();
-    }, []);
-
-    useEffect(() => {
-        axios
-            .post("/api/matching-users", { userSearch })
-            .then(({ data }) => console.log(data.rows))
-            .catch((err) => console.log("error in getMatching users: ", err));
+        let ignore;
+        (() => {
+            axios
+                .get("/api/users/" + (recentUsers || "newUsers"))
+                .then(({ data }) => {
+                    if (!ignore) {
+                        setUsers(data.rows);
+                    }
+                });
+        })();
+        return () => {
+            ignore = true;
+        };
     }, [userSearch]);
 
     return (
@@ -30,20 +30,17 @@ export default function FindPeople() {
                     setUserSearch(e.target.value);
                 }}
             />
-            {!userSearch &&
-                users.map((user) => (
-                    <div className="find-people-user" key={user.id}>
-                        {user.first} {user.last}
+            {users.map((user) => (
+                <div className="find-people-user" key={user.id}>
+                    <Link to={"/user/" + user.id}>
+                        <h3>
+                            {user.first} {user.last}
+                        </h3>
                         <img src={user.image_url}></img>
-                    </div>
-                ))}
-            {/* {userSearch &&
-                userSearch.map((userFromSearch) => (
-                    <div className="find-people-user" key={userFromSearch.id}>
-                        {userFromSearch.first} {userFromSearch.last}
-                        <img src={userFromSearch.image_url}></img>
-                    </div>
-                ))} */}
+                    </Link>
+                </div>
+            ))}
+            {!users.length && <div>No results found</div>}
         </>
     );
 }
