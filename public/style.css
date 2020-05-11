@@ -1,4 +1,4 @@
-* {
+/* * {
     font-family: "Helvetica Neue";
     box-sizing: border-box;
     background-color: gainsboro;
@@ -26,16 +26,16 @@
     width: 240px;
     background-color: whitesmoke;
 }
-
-input {
+*/
+/* input {
     background-color: whitesmoke;
     color: black;
-}
+} */
 
-::placeholder {
+/* ::placeholder {
     text-transform: uppercase;
 }
 
 .find-people-user {
     border: black solid 3px;
-}
+}  */

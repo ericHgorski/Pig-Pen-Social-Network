@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import ProfilePic from "./profilepic";
 import BioEditor from "./bioeditor";
+import Button from "@material-ui/core/Button";
+import Input from "@material-ui/core/Input";
+import Typography from "@material-ui/core/Typography";
 
 export default class Profile extends Component {
     constructor(props) {
@@ -16,9 +19,9 @@ export default class Profile extends Component {
         const { first, last, image_url, bio } = this.props.userInfo;
         return (
             <>
-                <h1>
+                <Typography variant="h2">
                     Hi there {first} {last}.
-                </h1>
+                </Typography>
                 <ProfilePic
                     toggleUploader={this.props.toggleUploader}
                     first={first}

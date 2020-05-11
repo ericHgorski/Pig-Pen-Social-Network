@@ -1,15 +1,9 @@
 import React, { Component } from "react";
-import Button from "./styled/button";
 import axios from "./axios";
 import styled from "styled-components";
-
-const StyledTextarea = styled.textarea`
-    background-color: whitesmoke;
-    height: 80px;
-    width: 200px;
-    color: black;
-    font-size: large;
-`;
+import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
+import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 
 export default class BioEditor extends Component {
     constructor(props) {
@@ -47,43 +41,47 @@ export default class BioEditor extends Component {
             <>
                 {this.state.editMode ? (
                     <div id="edit-bio">
-                        <StyledTextarea
+                        <TextareaAutosize
                             name="draftBio"
                             defaultValue={this.props.bio}
                             onChange={(e) => this.handleChange(e)}
-                        ></StyledTextarea>
-                        <button
-                            className="button"
+                            rowsMin={8}
+                            placeholder="Max 500 characters"
+                        />
+                        <Button
+                            variant="contained"
+                            color="primary"
                             onClick={(e) => this.setBio(e)}
                         >
                             SAVE BIO
-                        </button>
-                        <button
-                            className="button"
+                        </Button>
+                        <Button
+                            variant="contained"
                             onClick={() => this.toggleBioEditor()}
                         >
                             CANCEL
-                        </button>
+                        </Button>
                     </div>
                 ) : this.props.bio ? (
                     <div id="edit-bio">
                         Your bio: {this.props.bio}
-                        <button
-                            className="button"
+                        <Button
+                            variant="contained"
+                            color="primary"
                             onClick={() => this.toggleBioEditor()}
                         >
                             EDIT BIO
-                        </button>
+                        </Button>
                     </div>
                 ) : (
                     <div id="add-bio">
-                        <button
-                            className="button"
-                            id="bio"
+                        <Button
+                            variant="contained"
+                            color="primary"
                             onClick={() => this.toggleBioEditor()}
                         >
                             Add Bio
-                        </button>
+                        </Button>
                     </div>
                 )}
             </>

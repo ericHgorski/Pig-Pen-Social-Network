@@ -4,7 +4,7 @@ export default function Logo() {
     return (
         <img
             id="logo-small"
-            width="100"
+            height="70"
             className="profile-pic"
             src="/logo.png"
         />

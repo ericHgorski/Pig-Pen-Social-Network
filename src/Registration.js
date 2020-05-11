@@ -2,6 +2,9 @@ import React from "react";
 import axios from "./axios";
 import { Link } from "react-router-dom";
 import Logo from "./logo";
+import Button from "@material-ui/core/Button";
+import Input from "@material-ui/core/Input";
+import Typography from "@material-ui/core/Typography";
 
 export default class Registration extends React.Component {
     constructor() {
@@ -34,36 +37,47 @@ export default class Registration extends React.Component {
                 className="reg-container"
             >
                 <Logo />
-                <h3>Registration</h3>
-                {this.state.error && <div>Oops something went wrong!</div>}
-                <input
+
+                <Typography variant="h2">Registration</Typography>
+                {this.state.error && (
+                    <Typography color="error">
+                        Oops something went wrong!
+                    </Typography>
+                )}
+                <Input
                     name="first"
                     autoComplete="off"
-                    placeholder="first"
+                    placeholder="FIRST"
                     type="text"
                 />
-                <input
+                <Input
                     name="last"
                     autoComplete="off"
-                    placeholder="last"
+                    placeholder="LAST"
                     type="text"
                 />
-                <input
+                <Input
                     name="email"
                     autoComplete="off"
-                    placeholder="email"
+                    placeholder="EMAIL"
                     type="email"
                 />
-                <input
+                <Input
                     name="password"
                     autoComplete="off"
-                    placeholder="password"
+                    placeholder="PASSWORD"
                     type="password"
                 />
-                <button className="button" onClick={() => this.submit()}>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => this.submit()}
+                >
                     Register
-                </button>
-                <Link to="/login">Click here to Log in!</Link>
+                </Button>
+                <Link to="/login">
+                    <Button variant="contained">Login</Button>
+                </Link>
             </div>
         );
     }

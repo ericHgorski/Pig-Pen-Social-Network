@@ -1,24 +1,54 @@
 import React from "react";
 import Logo from "./logo";
-import Logout from "./logout";
 import { Link } from "react-router-dom";
-import styled from "styled-components";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
+import { makeStyles } from "@material-ui/core/styles";
 
-const StyledNavbar = styled.div`
-    height: 15vh;
-    display: flex;
-    justify-content: flex-end;
-    padding: 10px;
-    margin: 10px;
-`;
+const useStyles = makeStyles(() => ({
+    root: {
+        flexGrow: 1,
+    },
+    title: {
+        flexGrow: 1,
+        fontFamily: "cursive",
+    },
+    link: {
+        textDecoration: "none",
+        color: "white",
+    },
+}));
 
 export default function Navbar() {
+    const classes = useStyles();
+
     return (
-        <StyledNavbar>
-            <Logout />
-            <Link to="/">My Profile</Link>
-            <Link to="/users">Find Friends</Link>
-            <Logo />
-        </StyledNavbar>
+        <div className={classes.root}>
+            <AppBar position="static">
+                <Toolbar>
+                    <Typography className={classes.title} variant="h4">
+                        Pig Pen
+                    </Typography>
+                    <Button>
+                        <Link className={classes.link} to="/">
+                            My Profile
+                        </Link>
+                    </Button>
+                    <Button>
+                        <Link className={classes.link} to="/users">
+                            Find Friends
+                        </Link>
+                    </Button>
+                    <Button>
+                        <a className={classes.link} href="/logout">
+                            Logout
+                        </a>
+                    </Button>
+                    <Logo />
+                </Toolbar>
+            </AppBar>
+        </div>
     );
 }

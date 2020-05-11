@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import axios from "./axios";
 import { Link } from "react-router-dom";
+import Button from "@material-ui/core/Button";
+import Input from "@material-ui/core/Input";
+import Typography from "@material-ui/core/Typography";
 
 export default class Login extends Component {
     constructor() {
@@ -32,29 +35,39 @@ export default class Login extends Component {
                 onChange={(e) => this.handleChange(e)}
                 className="reg-container"
             >
-                <h3>Login</h3>
-                {this.state.error && <div>Oops something went wrong!</div>}
-                <input
+                <Typography variant="h3">Login</Typography>
+                {this.state.error && (
+                    <Typography color="error">
+                        Oops something went wrong!
+                    </Typography>
+                )}
+                <Input
                     name="email"
                     autoComplete="off"
                     placeholder="email"
                     type="email"
                 />
-                <br></br>
-                <input
+                <Input
                     name="password"
                     autoComplete="off"
                     placeholder="password"
                     type="password"
                 />
-                <br></br>
-                <button className="button" onClick={() => this.submit()}>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    className="button"
+                    onClick={() => this.submit()}
+                >
                     Login
-                </button>
-                <br></br>
-                <Link to="/">Register</Link>
-                <br></br>
-                <Link to="/reset/start">Reset your password</Link>
+                </Button>
+                <Button variant="contained">
+                    <Link to="/">Register</Link>
+                </Button>
+
+                <Button variant="contained">
+                    <Link to="/reset/start">Reset your password</Link>
+                </Button>
             </div>
         );
     }
