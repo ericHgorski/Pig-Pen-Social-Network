@@ -165,8 +165,9 @@ app.get("/user", (req, res) => {
 });
 
 // If search parameter, get most corresponding users, else, get most recent users.
-app.get("/api/users/:user", async (req, res) => {
-    if (req.params.user == "recentUsers") {
+app.get("/api/users/:search", async (req, res) => {
+    const query = req.params.search;
+    if (query == "noSearch") {
         try {
             const result = await db.getRecentUsers();
             res.json(result);
@@ -175,7 +176,7 @@ app.get("/api/users/:user", async (req, res) => {
         }
     } else {
         try {
-            const result = await db.getMatchingUsers(req.params.user);
+            const result = await db.getMatchingUsers(query);
             res.json(result);
         } catch (err) {
             console.log("Error in get matching users app.get request: ", err);
@@ -186,12 +187,12 @@ app.get("/api/users/:user", async (req, res) => {
 // Get other user information and id of logged in user.
 app.get("/api/user/:id", (req, res) => {
     db.getAllUserIds().then(({ rows }) => {
-        // get all user Ids to send 4o4 if user not found.
+        // Get all user Ids to send 4o4 if user not found.
         const allIds = rows.map(({ id }) => id);
         if (allIds.includes(parseInt(req.params.id))) {
             db.getUserInfo(req.params.id).then(({ rows }) => {
                 const profileData = rows[0];
-                // add loggedIn userId to prevent from seeing own profile
+                // Add loggedIn userId to response to prevent from seeing own profile
                 profileData.loggedInUserId = req.session.userId;
                 res.json(profileData);
             });

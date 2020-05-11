@@ -4,14 +4,14 @@ import axios from "./axios";
 
 export default function FindPeople() {
     const [users, setUsers] = useState([]);
-    const [userSearch, setUserSearch] = useState("");
+    const [search, setSearch] = useState("");
     // On mount, show three most recent users, if user searches,
     // show users that match with search. Also ignore if return is out of order.
     useEffect(() => {
         let ignore;
         (() => {
             axios
-                .get("/api/users/" + (recentUsers || "newUsers"))
+                .get("/api/users/" + (search || "noSearch"))
                 .then(({ data }) => {
                     if (!ignore) {
                         setUsers(data.rows);
@@ -21,13 +21,13 @@ export default function FindPeople() {
         return () => {
             ignore = true;
         };
-    }, [userSearch]);
+    }, [search]);
 
     return (
         <>
             <input
                 onChange={(e) => {
-                    setUserSearch(e.target.value);
+                    setSearch(e.target.value);
                 }}
             />
             {users.map((user) => (
