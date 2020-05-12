@@ -70,16 +70,7 @@ export default class App extends Component {
                             />
                         )}
                     />
-                    <Route
-                        path="/users"
-                        render={(props) => (
-                            <FindPeople
-                            // key={props.match.url}
-                            // match={props.match}
-                            // history={props.history}
-                            />
-                        )}
-                    />
+                    <Route path="/users" render={(props) => <FindPeople />} />
 
                     {this.state.uploaderIsVisible && (
                         <Uploader setImage={(url) => this.setImage(url)} />

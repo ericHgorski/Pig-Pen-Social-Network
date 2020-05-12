@@ -28,7 +28,9 @@ module.exports.addResetCode = (email, code) => {
 // Get the most recent reset code associated with the given address.
 module.exports.verifyResetCode = (email) => {
     return db.query(
-        `SELECT * FROM reset_codes WHERE (CURRENT_TIMESTAMP - timestamp < INTERVAL '10 minutes') AND (email = $1) ORDER BY id DESC LIMIT 1;`,
+        `SELECT * FROM reset_codes 
+        WHERE (CURRENT_TIMESTAMP - timestamp < INTERVAL '10 minutes') 
+        AND (email = $1) ORDER BY id DESC LIMIT 1;`,
         [email]
     );
 };
@@ -78,14 +80,17 @@ module.exports.addUserBio = (id, bioText) => {
 
 module.exports.getAllUserIds = () => {
     return db.query(
-        `SELECT id FROM users;
+        `SELECT id 
+        FROM users;
     `
     );
 };
 
 module.exports.getRecentUsers = () => {
     return db.query(
-        `SELECT * FROM users ORDER BY id DESC LIMIT 3;
+        `SELECT * FROM users 
+        ORDER BY id DESC 
+        LIMIT 3;
     `
     );
 };
@@ -93,8 +98,42 @@ module.exports.getRecentUsers = () => {
 module.exports.getMatchingUsers = (val) => {
     return db.query(
         `SELECT * FROM users 
-    WHERE first 
-    ILIKE $1;`,
+        WHERE first 
+        ILIKE $1;`,
         [val + "%"]
+    );
+};
+module.exports.getFriendStatus = (receiver_id, sender_id) => {
+    return db.query(
+        `SELECT * FROM friendships 
+        WHERE (receiver_id = $1 AND sender_id = $2)
+        OR (receiver_id = $2 AND sender_id = $1);`,
+        [receiver_id, sender_id]
+    );
+};
+
+module.exports.sendFriendRequest = (receiver_id, sender_id) => {
+    return db.query(
+        `INSERT INTO friendships (receiver_id, sender_id) 
+        VALUES ($1, $2) RETURNING *;`,
+        [receiver_id, sender_id]
+    );
+};
+
+module.exports.acceptFriend = (receiver_id, sender_id) => {
+    return db.query(
+        `UPDATE friendships SET accepted = TRUE 
+        WHERE (receiver_id = $1 AND sender_id = $2) 
+        OR (receiver_id = $2 AND sender_id = $1);`,
+        [receiver_id, sender_id]
+    );
+};
+
+module.exports.unfriend = (receiver_id, sender_id) => {
+    return db.query(
+        `DELETE FROM friendships WHERE 
+        (receiver_id = $1 AND sender_id = $2) 
+        OR (receiver_id = $2 AND sender_id = $1);`,
+        [receiver_id, sender_id]
     );
 };

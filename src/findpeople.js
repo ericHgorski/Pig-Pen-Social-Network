@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "./axios";
 import Input from "@material-ui/core/Input";
 import Typography from "@material-ui/core/Typography";
+import Avatar from "@material-ui/core/Avatar";
 import { makeStyles } from "@material-ui/core/styles";
 
 export default function FindPeople() {
@@ -29,7 +30,12 @@ export default function FindPeople() {
     //STYLING
     const useStyles = makeStyles(() => ({
         user: {
-            border: "1px solid black",
+            border: "1px black solid",
+            width: "45%",
+            "&:hover": {
+                backgroundColor: "lightpink",
+                opacity: "0.8",
+            },
         },
         link: {
             textDecoration: "none",
@@ -52,7 +58,7 @@ export default function FindPeople() {
                         <Typography variant="h5">
                             {user.first} {user.last}
                         </Typography>
-                        <img src={user.image_url}></img>
+                        <Avatar src={user.image_url}></Avatar>
                     </Link>
                 </div>
             ))}

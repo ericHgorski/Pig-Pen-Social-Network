@@ -11,6 +11,10 @@ const useStyles = makeStyles(() => ({
     root: {
         flexGrow: 1,
     },
+    navbar: {
+        backgroundColor: "#e899dc",
+        backgroundImage: "linear - gradient(315deg, #e899dc 0%, #d387ab 74%)",
+    },
     title: {
         flexGrow: 1,
         fontFamily: "cursive",
@@ -27,7 +31,7 @@ export default function Navbar() {
     return (
         <div className={classes.root}>
             <AppBar position="static">
-                <Toolbar>
+                <Toolbar className={classes.navbar}>
                     <Typography className={classes.title} variant="h4">
                         Pig Pen
                     </Typography>

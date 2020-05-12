@@ -226,6 +226,60 @@ app.post("/save-bio", (req, res) => {
     }
 });
 
+//  Get the current friend status between two users, and send correspond text back to component button.
+app.get("/api/friend-status/:id", async (req, res) => {
+    const otherId = req.params.id;
+    const loggedUserId = req.session.userId;
+    const { rows } = await db.getFriendStatus(otherId, loggedUserId);
+    // No relation between the users in database, so give option to send.
+    if (!rows.length) {
+        res.json({ text: "Send Friend Request" });
+        // If sender is other user and not accepted, show accept friend request.
+    } else if (rows[0].sender_id == otherId && !rows[0].accepted) {
+        res.json({ text: "Accept Friend Request" });
+        // If sender is loggedIn user and no accepted, show cancel friend request.
+    } else if (rows[0].receiver_id == otherId && !rows[0].accepted) {
+        res.json({ text: "Cancel Friend Request" });
+        // Otherwise give option to unfriend for both friended users.
+    } else {
+        res.json({ text: "Unfriend" });
+    }
+});
+
+// Post request which is triggered when friend button is pushed in otherprofile component.
+app.post("/api/friendship/:id", (req, res) => {
+    const otherId = req.params.id;
+    const loggedUserId = req.session.userId;
+    const { text } = req.body;
+    // If option to send request is available, make database entry and display cancel friend button.
+    if (text == "Send Friend Request") {
+        return db
+            .sendFriendRequest(otherId, loggedUserId)
+            .then(() => res.json({ text: "Cancel Friend Request" }))
+            .catch((err) => {
+                console.log("Error in api/friendship sendFriendRequest: ", err);
+            });
+        // If option to accept request then make db entry to set accepted to true, and display unfriend button.
+    } else if (text == "Accept Friend Request") {
+        return db
+            .acceptFriend(otherId, loggedUserId)
+            .then(() => res.json({ text: "Unfriend" }))
+            .catch((err) => {
+                console.log("Error in api/friendship acceptFriend: ", err);
+            });
+        // In case of cancel request, decline request or unfriend do the following.
+    } else {
+        return db
+            .unfriend(otherId, loggedUserId)
+            .then(() => {
+                res.json({ text: "Send Friend Request" });
+            })
+            .catch((err) => {
+                console.log("Error in api/friendship .unfriend: ", err);
+            });
+    }
+});
+
 //Logout functionality.
 app.get("/logout", (req, res) => {
     req.session = null;
