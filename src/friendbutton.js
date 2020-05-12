@@ -4,6 +4,7 @@ import Button from "@material-ui/core/Button";
 
 export default function FriendshipButton({ otherId }) {
     const [buttonText, setButtonText] = useState("");
+    // On mounting, get proper button display text from data base and set it.
     useEffect(() => {
         console.log("The butt has mounted.");
         axios
@@ -15,6 +16,7 @@ export default function FriendshipButton({ otherId }) {
                 console.log("Error in friend-status axios get request: ", err);
             });
     }, []);
+    // On button press, send current buttonText to route and determine response, and set new button text.
     function submit() {
         axios
             .post(`/api/friendship/${otherId}`, {
