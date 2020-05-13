@@ -217,13 +217,9 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
 
 // Save user bio.
 app.post("/save-bio", (req, res) => {
-    if (req.body.draftBio) {
-        db.addUserBio(req.session.userId, req.body.draftBio).then(() =>
-            res.json({ success: true })
-        );
-    } else {
-        res.json({ bioError: true });
-    }
+    db.addUserBio(req.session.userId, req.body.draftBio).then(() =>
+        res.json({ success: true, newBio: req.body.draftBio })
+    );
 });
 
 //  Get the current friend status between two users, and send correspond text back to component button.
@@ -267,7 +263,7 @@ app.post("/api/friendship/:id", (req, res) => {
             .catch((err) => {
                 console.log("Error in api/friendship acceptFriend: ", err);
             });
-        // In case of cancel request, decline request or unfriend do the following.
+        // In case of cancel request, decline request or unfriend change back to send friend request.
     } else {
         return db
             .unfriend(otherId, loggedUserId)

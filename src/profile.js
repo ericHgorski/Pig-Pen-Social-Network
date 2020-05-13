@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import ProfilePic from "./profilepic";
 import BioEditor from "./bioeditor";
-import Button from "@material-ui/core/Button";
-import Input from "@material-ui/core/Input";
 import Typography from "@material-ui/core/Typography";
 
 export default class Profile extends Component {

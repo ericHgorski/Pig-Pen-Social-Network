@@ -1,90 +1,80 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "./axios";
-import styled from "styled-components";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
+import { makeStyles } from "@material-ui/core/styles";
 
-export default class BioEditor extends Component {
-    constructor(props) {
-        super(props);
-        this.state = { editMode: false, draftBio: null, bioError: false };
+export default function BioEdtior(props) {
+    const [editMode, setEditMode] = useState(false);
+    const [draftBio, setDraftBio] = useState(null);
+
+    const onChangeHandler = (e) => {
+        setDraftBio(e.target.value);
+    };
+
+    function toggleBioEditor() {
+        setEditMode(!editMode);
     }
 
-    handleChange(e) {
-        this.setState({ [e.target.name]: e.target.value });
-    }
-
-    toggleBioEditor() {
-        this.setState({
-            editMode: !this.state.editMode,
-        });
-    }
-
-    async setBio() {
-        this.setState({
-            editMode: false,
-        });
+    async function setBio() {
+        toggleBioEditor();
         try {
-            const { data } = await axios.post("/save-bio", this.state);
-            if (data.success == true) {
-                this.props.saveBio(this.state.draftBio);
+            const { data } = await axios.post("/save-bio", { draftBio });
+            if (data.success) {
+                setDraftBio(data.newBio);
             }
-        } catch (e) {
-            console.log("Error in axios/post/save-bio: ", e);
+        } catch (err) {
+            console.log("Error in axios/post/save-bio: ", err);
         }
     }
 
-    // Render for three cases: 1) No bio is set, 2) bio is set, 3) bio is being edited
-    render() {
-        return (
-            <>
-                {this.state.editMode ? (
+    return (
+        <>
+            <div id="bio-editor-container">
+                {editMode ? (
                     <div id="edit-bio">
                         <TextareaAutosize
                             name="draftBio"
-                            defaultValue={this.props.bio}
-                            onChange={(e) => this.handleChange(e)}
+                            defaultValue={props.bio}
+                            onChange={onChangeHandler}
                             rowsMin={8}
                             placeholder="Max 500 characters"
                         />
                         <Button
                             variant="contained"
                             color="primary"
-                            onClick={(e) => this.setBio(e)}
+                            onClick={setBio}
                         >
                             SAVE BIO
                         </Button>
-                        <Button
-                            variant="contained"
-                            onClick={() => this.toggleBioEditor()}
-                        >
+                        <Button variant="contained" onClick={toggleBioEditor}>
                             CANCEL
                         </Button>
                     </div>
-                ) : this.props.bio ? (
-                    <div id="edit-bio">
-                        Your bio: {this.props.bio}
+                ) : props.bio ? (
+                    <Typography>
+                        About me: {draftBio || props.bio}
                         <Button
                             variant="contained"
                             color="primary"
-                            onClick={() => this.toggleBioEditor()}
+                            onClick={toggleBioEditor}
                         >
                             EDIT BIO
                         </Button>
-                    </div>
+                    </Typography>
                 ) : (
                     <div id="add-bio">
                         <Button
                             variant="contained"
                             color="primary"
-                            onClick={() => this.toggleBioEditor()}
+                            onClick={toggleBioEditor}
                         >
                             Add Bio
                         </Button>
                     </div>
                 )}
-            </>
-        );
-    }
+            </div>
+        </>
+    );
 }
