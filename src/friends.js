@@ -1,12 +1,11 @@
 import React, { useEffect } from "react";
-import { receiveWantToBeFriends, acceptFriend } from "./actions";
+import { receiveWantToBeFriends, acceptFriend, unfriend } from "./actions";
 import { useDispatch, useSelector } from "react-redux";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Avatar from "@material-ui/core/Avatar";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
-import FriendshipButton from "./friendshipbutton";
 
 export default function Friends() {
     const dispatch = useDispatch();
@@ -51,6 +50,12 @@ export default function Friends() {
 
     return (
         <>
+            {wantToBeFriends.length == 0 && alreadyFriends.length == 0 && (
+                <Typography variant="h3">
+                    Rats! You don't have any friends yet. Check out the Find
+                    People page to get started.
+                </Typography>
+            )}
             {wantToBeFriends.length != 0 && (
                 <Typography variant="h5"> WANT TO BE FRIENDS </Typography>
             )}
@@ -88,7 +93,9 @@ export default function Friends() {
                             ></Avatar>
                         </Link>
                     </div>
-                    <FriendshipButton otherId={user.id} />
+                    <Button onClick={() => dispatch(unfriend(user.id))}>
+                        Unfriend
+                    </Button>
                 </>
             ))}
         </>

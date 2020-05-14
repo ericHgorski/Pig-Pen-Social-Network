@@ -259,7 +259,7 @@ app.post("/api/friendship/:id", (req, res) => {
     } else if (text == "Accept Friend Request") {
         return db
             .acceptFriend(otherId, loggedUserId)
-            .then(() => res.json({ text: "Unfriend" }))
+            .then(() => res.json({ text: "Unfriend", otherId: otherId }))
             .catch((err) => {
                 console.log("Error in api/friendship acceptFriend: ", err);
             });
@@ -268,7 +268,7 @@ app.post("/api/friendship/:id", (req, res) => {
         return db
             .unfriend(otherId, loggedUserId)
             .then(() => {
-                res.json({ text: "Send Friend Request" });
+                res.json({ text: "Send Friend Request", otherId: otherId });
             })
             .catch((err) => {
                 console.log("Error in api/friendship .unfriend: ", err);
