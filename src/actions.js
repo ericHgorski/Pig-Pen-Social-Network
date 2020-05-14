@@ -7,3 +7,10 @@ export async function receiveWantToBeFriends() {
         users: data,
     };
 }
+
+export async function acceptFriend(otherId) {
+    const { data } = await axios.post(`/api/friendship/${otherId}`, {
+        text: "Accept Friend Request",
+    });
+    console.log("data :>> ", data);
+}

@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
-import { receiveWantToBeFriends } from "./actions";
+import { receiveWantToBeFriends, acceptFriend } from "./actions";
 import { useDispatch, useSelector } from "react-redux";
 import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
 import Avatar from "@material-ui/core/Avatar";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
@@ -42,7 +43,7 @@ export default function Friends() {
 
     useEffect(() => {
         dispatch(receiveWantToBeFriends());
-    }, [wantToBeFriends]);
+    }, []);
 
     if (!wantToBeFriends) {
         return null;
@@ -66,7 +67,9 @@ export default function Friends() {
                             ></Avatar>
                         </Link>
                     </div>
-                    <FriendshipButton otherId={user.id} />
+                    <Button onClick={() => dispatch(acceptFriend(user.id))}>
+                        Accept Friend Request
+                    </Button>
                 </>
             ))}
             {alreadyFriends.length != 0 && (
