@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import FriendshipButton from "./friendshipbutton";
 
 export default function Friends() {
+    const dispatch = useDispatch();
     const wantToBeFriends = useSelector(
         (state) =>
             state.wantToBeFriends &&
@@ -40,8 +41,8 @@ export default function Friends() {
     const classes = useStyles();
 
     useEffect(() => {
-        useDispatch(receiveWantToBeFriends());
-    }, []);
+        dispatch(receiveWantToBeFriends());
+    }, [wantToBeFriends]);
 
     if (!wantToBeFriends) {
         return null;
@@ -49,7 +50,9 @@ export default function Friends() {
 
     return (
         <>
-            <Typography variant="h5"> WANT TO BE FRIENDS </Typography>
+            {wantToBeFriends.length != 0 && (
+                <Typography variant="h5"> WANT TO BE FRIENDS </Typography>
+            )}
             {wantToBeFriends.map((user) => (
                 <>
                     <div className={classes.user} key={user.id}>
@@ -66,7 +69,9 @@ export default function Friends() {
                     <FriendshipButton otherId={user.id} />
                 </>
             ))}
-            <Typography variant="h5"> ALREADY FRIENDS </Typography>
+            {alreadyFriends.length != 0 && (
+                <Typography variant="h5"> ALREADY FRIENDS </Typography>
+            )}
             {alreadyFriends.map((user) => (
                 <>
                     <div className={classes.user} key={user.id}>
