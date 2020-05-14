@@ -276,6 +276,15 @@ app.post("/api/friendship/:id", (req, res) => {
     }
 });
 
+app.get("/want-to-be-friends", async (req, res) => {
+    try {
+        const { rows } = await db.getWantToBeFriends(req.session.userId);
+        res.json(rows);
+    } catch (err) {
+        console.log("error in app get want to be friends: ", err);
+    }
+});
+
 //Logout functionality.
 app.get("/logout", (req, res) => {
     req.session = null;

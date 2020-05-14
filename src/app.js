@@ -4,6 +4,7 @@ import Uploader from "./uploader";
 import Profile from "./profile";
 import OtherProfile from "./otherprofile";
 import FindPeople from "./findpeople";
+import Friends from "./friends";
 import Navbar from "./navbar";
 import { BrowserRouter, Route } from "react-router-dom";
 
@@ -49,6 +50,7 @@ export default class App extends Component {
             <BrowserRouter>
                 <>
                     <Navbar />
+
                     <Route
                         exact
                         path="/"
@@ -60,6 +62,9 @@ export default class App extends Component {
                             />
                         )}
                     />
+                    {this.state.uploaderIsVisible && (
+                        <Uploader setImage={(url) => this.setImage(url)} />
+                    )}
                     <Route
                         path="/user/:id"
                         render={(props) => (
@@ -70,11 +75,8 @@ export default class App extends Component {
                             />
                         )}
                     />
-                    <Route path="/users" render={(props) => <FindPeople />} />
-
-                    {this.state.uploaderIsVisible && (
-                        <Uploader setImage={(url) => this.setImage(url)} />
-                    )}
+                    <Route path="/users" render={() => <FindPeople />} />
+                    <Route path="/friends" render={() => <Friends />} />
                 </>
             </BrowserRouter>
         );

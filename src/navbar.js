@@ -41,8 +41,13 @@ export default function Navbar() {
                         </Link>
                     </Button>
                     <Button>
+                        <Link className={classes.link} to="/friends">
+                            Friends
+                        </Link>
+                    </Button>
+                    <Button>
                         <Link className={classes.link} to="/users">
-                            Find Friends
+                            Find People
                         </Link>
                     </Button>
                     <Button>

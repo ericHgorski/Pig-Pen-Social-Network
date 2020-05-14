@@ -4,6 +4,7 @@ import Button from "@material-ui/core/Button";
 
 export default function FriendshipButton({ otherId }) {
     const [buttonText, setButtonText] = useState("");
+
     // On mounting, get proper button display text from data base and set it.
     useEffect(() => {
         console.log("The butt has mounted.");
@@ -29,9 +30,24 @@ export default function FriendshipButton({ otherId }) {
                 console.log("Error in axios.post /friendship: ", err);
             });
     }
+    // useEffect(() => {
+    //     console.log("buttonText :>> ", buttonText);
+    //     console.log(buttonText == "UNFRIEND" ? "secondary" : "secondary");
+
+    //     if (!buttonText) {
+    //         return null;
+    //     }
+    // }, []);
+
+    // FIGURE OUT WAY TO MAKE BUTTON COLOR CHANGE DEPENDING ON BUTTON TEXT
     return (
         <div>
-            <Button onClick={submit}>{buttonText}</Button>
+            <Button
+                // color={buttonText == "unfriend" ? "secondary" : "primary"}
+                onClick={submit}
+            >
+                {buttonText}
+            </Button>
         </div>
     );
 }

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PageNotFound from "./pagenotfound.js";
-import FriendButton from "./friendbutton.js";
+import FriendshipButton from "./friendshipbutton.js";
 import axios from "./axios";
 
 class OtherProfile extends Component {
@@ -35,7 +35,7 @@ class OtherProfile extends Component {
                     </h2>
                     <p>{bio}</p>
                     <img src={image_url}></img>
-                    <FriendButton otherId={this.props.match.params.id} />
+                    <FriendshipButton otherId={this.props.match.params.id} />
                 </div>
             </>
         );

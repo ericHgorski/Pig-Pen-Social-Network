@@ -5,20 +5,35 @@ import Typography from "@material-ui/core/Typography";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import { makeStyles } from "@material-ui/core/styles";
 
+const useStyles = makeStyles(() => ({
+    textArea: {
+        marginTop: "20px",
+        marginLeft: "10px",
+        gridColumn: "1 / -1 ",
+    },
+    bioEditorContainer: {
+        display: "grid",
+        gridTemplateRows: "150px 30px",
+        gridTemplateColumns: "150px 75px",
+        gap: "5px",
+    },
+    buttons: {
+        marginLeft: "10px",
+        gridRow: 2,
+    },
+}));
+
 export default function BioEdtior(props) {
     const [editMode, setEditMode] = useState(false);
     const [draftBio, setDraftBio] = useState(null);
+    const classes = useStyles();
 
     const onChangeHandler = (e) => {
         setDraftBio(e.target.value);
     };
 
-    function toggleBioEditor() {
-        setEditMode(!editMode);
-    }
-
     async function setBio() {
-        toggleBioEditor();
+        setEditMode(!editMode);
         try {
             const { data } = await axios.post("/save-bio", { draftBio });
             if (data.success) {
@@ -31,10 +46,11 @@ export default function BioEdtior(props) {
 
     return (
         <>
-            <div id="bio-editor-container">
+            <div>
                 {editMode ? (
-                    <div id="edit-bio">
+                    <div className={classes.bioEditorContainer}>
                         <TextareaAutosize
+                            className={classes.textArea}
                             name="draftBio"
                             defaultValue={props.bio}
                             onChange={onChangeHandler}
@@ -42,23 +58,30 @@ export default function BioEdtior(props) {
                             placeholder="Max 500 characters"
                         />
                         <Button
+                            className={classes.buttons}
                             variant="contained"
                             color="primary"
                             onClick={setBio}
                         >
                             SAVE BIO
                         </Button>
-                        <Button variant="contained" onClick={toggleBioEditor}>
+                        <Button
+                            className={classes.buttons}
+                            variant="contained"
+                            onClick={() => setEditMode(!editMode)}
+                        >
                             CANCEL
                         </Button>
                     </div>
                 ) : props.bio ? (
-                    <Typography>
+                    <Typography variant="h6">
                         About me: {draftBio || props.bio}
+                        <br></br>
                         <Button
+                            className={classes.buttons}
                             variant="contained"
                             color="primary"
-                            onClick={toggleBioEditor}
+                            onClick={() => setEditMode(!editMode)}
                         >
                             EDIT BIO
                         </Button>
@@ -66,11 +89,13 @@ export default function BioEdtior(props) {
                 ) : (
                     <div id="add-bio">
                         <Button
+                            onClick={setBio}
+                            className={classes.buttons}
                             variant="contained"
                             color="primary"
-                            onClick={toggleBioEditor}
+                            onClick={() => setEditMode(!editMode)}
                         >
-                            Add Bio
+                            ADD BIO
                         </Button>
                     </div>
                 )}
