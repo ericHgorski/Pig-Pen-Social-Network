@@ -57,6 +57,7 @@ export default class App extends Component {
                         render={() => (
                             <Profile
                                 userInfo={this.state.userInfo}
+                                uploaderStatus={this.state.uploaderIsVisible}
                                 toggleUploader={() => this.toggleUploader()}
                                 saveBio={(text) => this.saveBio(text)}
                             />

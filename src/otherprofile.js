@@ -1,45 +1,43 @@
-import React, { Component } from "react";
 import PageNotFound from "./pagenotfound.js";
 import FriendshipButton from "./friendshipbutton.js";
 import axios from "./axios";
+import React, { useState, useEffect } from "react";
 
-class OtherProfile extends Component {
-    constructor(props) {
-        super(props);
-        this.state = { userInfo: {}, userNotFound: false };
-    }
+export default function OtherProfile(props) {
+    const [userInfo, setUserInfo] = useState({});
+    const [userNotFound, setUserNotFound] = useState("");
 
-    async componentDidMount() {
-        const { data } = await axios.get(
-            `/api/user/${this.props.match.params.id}`,
-            this.state
-        );
-        // If logged in user tries to visit own profile, redirect to profile component
-        if (this.props.match.params.id == data.loggedInUserId) {
-            this.props.history.push("/");
-        } else if (data.userNotFound) {
-            this.setState({ userNotFound: true });
-        } else {
-            this.setState({ userInfo: data });
-        }
-    }
+    useEffect(() => {
+        axios
+            .get(`/api/user/${props.match.params.id}`, userInfo)
+            .then(({ data }) => {
+                // If logged in user tries to visit own profile, redirect to profile component
+                if (props.match.params.id == data.loggedInUserId) {
+                    props.history.push("/");
+                } else if (data.userNotFound) {
+                    setUserNotFound(true);
+                } else {
+                    setUserInfo(data);
+                }
+            });
+    });
 
-    render() {
-        const { bio, image_url, first, last } = this.state.userInfo;
-        return (
-            <>
-                {this.state.userNotFound && <PageNotFound />}
+    const { bio, image_url, first, last } = userInfo;
+
+    return (
+        <>
+            {userNotFound && <PageNotFound />}
+
+            {!userNotFound && (
                 <div className="profile">
                     <h2>
                         {first} {last}
                     </h2>
                     <p>{bio}</p>
-                    <img src={image_url}></img>
-                    <FriendshipButton otherId={this.props.match.params.id} />
+                    <img src={image_url || "../default.png"}></img>
+                    <FriendshipButton otherId={props.match.params.id} />
                 </div>
-            </>
-        );
-    }
+            )}
+        </>
+    );
 }
-
-export default OtherProfile;

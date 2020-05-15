@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import Button from "@material-ui/core/Button";
+import Input from "@material-ui/core/Input";
+
 import axios from "./axios";
 
 export default class Uploader extends Component {
@@ -34,7 +37,7 @@ export default class Uploader extends Component {
     render() {
         return (
             <div>
-                <input
+                <Input
                     type="file"
                     name="file"
                     accept="image/*"
@@ -42,9 +45,14 @@ export default class Uploader extends Component {
                         this.handleChange(e);
                     }}
                 />
-                <button className="button" onClick={(e) => this.uploadPic(e)}>
+                <Button
+                    color="secondary"
+                    variant="contained"
+                    className="button"
+                    onClick={(e) => this.uploadPic(e)}
+                >
                     UPLOAD
-                </button>
+                </Button>
             </div>
         );
     }

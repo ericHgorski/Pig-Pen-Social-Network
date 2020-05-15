@@ -90,7 +90,7 @@ module.exports.getRecentUsers = () => {
     return db.query(
         `SELECT * FROM users 
         ORDER BY id DESC 
-        LIMIT 8;
+        LIMIT 9;
     `
     );
 };

@@ -7,7 +7,32 @@ import Avatar from "@material-ui/core/Avatar";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 
+const useStyles = makeStyles(() => ({
+    user: {
+        border: "1px lightpink solid",
+        borderRadius: "10%",
+        display: "flex",
+        justifyContent: "center",
+        width: "300px",
+        margin: "15px",
+        padding: "5px",
+        "&:hover": {
+            backgroundColor: "lightpink",
+            opacity: "0.8",
+        },
+    },
+    link: {
+        textDecoration: "none",
+        color: "black",
+    },
+    avatar: {
+        width: "200px",
+        height: "200px",
+    },
+}));
+
 export default function Friends() {
+    const classes = useStyles();
     const dispatch = useDispatch();
     const wantToBeFriends = useSelector(
         (state) =>
@@ -20,26 +45,6 @@ export default function Friends() {
             state.wantToBeFriends.filter((user) => user.accepted)
     );
 
-    const useStyles = makeStyles(() => ({
-        user: {
-            border: "1px black solid",
-            width: "300px",
-            "&:hover": {
-                backgroundColor: "lightpink",
-                opacity: "0.8",
-            },
-        },
-        link: {
-            textDecoration: "none",
-            color: "black",
-        },
-        avatar: {
-            width: "200px",
-            height: "200px",
-        },
-    }));
-    const classes = useStyles();
-
     useEffect(() => {
         dispatch(receiveWantToBeFriends());
     }, []);
@@ -51,7 +56,7 @@ export default function Friends() {
     return (
         <>
             {wantToBeFriends.length == 0 && alreadyFriends.length == 0 && (
-                <Typography variant="h3">
+                <Typography variant="h5">
                     Rats! You don't have any friends yet. Check out the Find
                     People page to get started.
                 </Typography>

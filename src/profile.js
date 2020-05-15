@@ -12,7 +12,10 @@ export default function Profile(props) {
     return (
         <>
             <Typography variant="h2">
-                Hi there {first} {last}.
+                {first} {last}
+            </Typography>
+            <Typography>
+                Click on your profile picture to upload a new one
             </Typography>
             <ProfilePic
                 toggleUploader={props.toggleUploader}
@@ -20,7 +23,10 @@ export default function Profile(props) {
                 last={last}
                 image_url={image_url}
             />
-            <BioEditor saveBio={props.saveBio} bio={bio} />
+
+            {!props.uploaderStatus && (
+                <BioEditor saveBio={props.saveBio} bio={bio} />
+            )}
         </>
     );
 }

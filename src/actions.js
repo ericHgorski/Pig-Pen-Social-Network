@@ -9,21 +9,21 @@ export async function receiveWantToBeFriends() {
 }
 
 export async function acceptFriend(otherId) {
-    const { data } = await axios.post(`/api/friendship/${otherId}`, {
+    await axios.post(`/api/friendship/${otherId}`, {
         text: "Accept Friend Request",
     });
     return {
         type: "ACCEPT_FRIEND_REQUEST",
-        otherId: data.otherId,
+        otherId,
     };
 }
 
 export async function unfriend(otherId) {
-    const { data } = await axios.post(`/api/friendship/${otherId}`, {
+    await axios.post(`/api/friendship/${otherId}`, {
         text: "Unfriend",
     });
     return {
         type: "UNFRIEND",
-        otherId: data.otherId,
+        otherId,
     };
 }

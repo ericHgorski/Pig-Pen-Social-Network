@@ -10,10 +10,11 @@ const useStyles = makeStyles(() => ({
         marginTop: "20px",
         marginLeft: "10px",
         gridColumn: "1 / -1 ",
+        fontSize: "15px",
     },
     bioEditorContainer: {
         display: "grid",
-        gridTemplateRows: "150px 30px",
+        gridTemplateRows: "180px 30px",
         gridTemplateColumns: "150px 75px",
         gap: "5px",
     },

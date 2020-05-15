@@ -10,6 +10,7 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles(() => ({
     root: {
         flexGrow: 1,
+        display: "flex",
     },
     navbar: {
         backgroundColor: "#e899dc",
@@ -33,8 +34,10 @@ export default function Navbar() {
             <AppBar position="static">
                 <Toolbar className={classes.navbar}>
                     <Typography className={classes.title} variant="h4">
-                        Pig Pen
+                        The Pig Pen
                     </Typography>
+                    <Logo />
+
                     <Button>
                         <Link className={classes.link} to="/">
                             My Profile
@@ -55,7 +58,6 @@ export default function Navbar() {
                             Logout
                         </a>
                     </Button>
-                    <Logo />
                 </Toolbar>
             </AppBar>
         </div>

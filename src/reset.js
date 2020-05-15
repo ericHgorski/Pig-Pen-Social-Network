@@ -1,101 +1,151 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "./axios";
 import { Link } from "react-router-dom";
+import Button from "@material-ui/core/Button";
+import Input from "@material-ui/core/Input";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
+import Logo from "./logo";
 
-export default class ResetPassword extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            step: 1,
-            error: false,
-            mailError: false,
-            codeError: false,
-        };
-    }
+const useStyles = makeStyles(() => ({
+    flexContainer: {
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        width: "100%",
+        margin: "20px",
+        justifyContent: "center",
+        height: "60vh",
+    },
+    flexItem: {
+        marginTop: "30px",
+    },
+    button: {
+        marginTop: "20px",
+        textDecoration: "none",
+    },
+}));
 
-    handleChange(e) {
-        this.setState({ [e.target.name]: e.target.value });
-    }
+export default function ResetPassword() {
+    const [step, setStep] = useState(1);
+    const [error, setError] = useState(false);
+    const [mailError, setMailError] = useState(false);
+    const [codeError, setCodeError] = useState(false);
+    const [fields, setFields] = useState({});
+    const classes = useStyles();
 
-    submitEmail() {
-        axios.post("/reset/start", this.state).then(({ data }) => {
-            if (data.success == true) {
-                this.setState({ step: 2 });
+    const handleChange = ({ target }) => {
+        setFields({ ...fields, [target.name]: target.value });
+    };
+
+    const submitEmail = () => {
+        axios.post("/reset/start", fields).then(({ data }) => {
+            if (data.success) {
+                setStep(2);
             } else if (data.noEmailFound) {
-                this.setState({ mailError: true });
+                setMailError(true);
             } else {
-                this.setState({ error: true });
+                setError(true);
             }
         });
-    }
-    submitResetCode() {
-        axios.post("/reset/verify", this.state).then(({ data }) => {
-            if (data.success == true) {
-                this.setState({ step: 3 });
-            } else {
-                this.setState({ codeError: true });
-            }
-        });
-    }
+    };
 
-    render() {
-        return (
-            <div>
-                <h1>RESET</h1>
-                {this.state.step == 1 && (
-                    <div onChange={(e) => this.handleChange(e)}>
-                        <input
-                            name="email"
-                            placeholder="email"
-                            type="email"
-                        ></input>
-                        <button
-                            className="button"
-                            onClick={() => this.submitEmail()}
-                        >
-                            Submit
-                        </button>
-                        <Link to="/login">Login</Link>
-                        {this.state.error && <div>Something went wrong!</div>}
-                        {this.state.mailError && (
-                            <div>This email was not found.</div>
-                        )}
-                    </div>
-                )}
-                {this.state.step == 2 && (
-                    <div onChange={(e) => this.handleChange(e)}>
-                        <input
-                            name="resetCode"
-                            autoComplete="off"
-                            placeholder="reset code"
-                            type="text"
-                        ></input>
-                        <input
-                            name="newPassword"
-                            autoComplete="off"
-                            placeholder="password"
-                            type="text"
-                        ></input>
-                        <button
-                            className="button"
-                            onClick={() => this.submitResetCode()}
-                        >
-                            Submit
-                        </button>
-                        {this.state.codeError && (
-                            <div>The code you entered was invalid.</div>
-                        )}
-                    </div>
-                )}
-                {this.state.step == 3 && (
-                    <div>
-                        <p>That worked great!</p>
-                        <Link to="/login">
-                            You can now login with your updated password
-                        </Link>
-                    </div>
-                )}
-            </div>
-        );
-    }
+    const submitResetCode = () => {
+        axios.post("/reset/verify", fields).then(({ data }) => {
+            if (data.success) {
+                setStep(3);
+            } else {
+                setCodeError(true);
+            }
+        });
+    };
+
+    return (
+        <>
+            {step == 1 && (
+                <div
+                    className={classes.flexContainer}
+                    onChange={(e) => handleChange(e)}
+                >
+                    <Logo />
+
+                    <Typography variant="h2">Reset Your Password</Typography>
+
+                    <Input
+                        className={classes.flexItem}
+                        name="email"
+                        placeholder="email"
+                        type="email"
+                    ></Input>
+                    <Button
+                        color="primary"
+                        variant="contained"
+                        className={classes.button}
+                        onClick={submitEmail}
+                    >
+                        Submit
+                    </Button>
+                    <Link className={classes.button} to="/login">
+                        <Button>Login</Button>
+                    </Link>
+                    {error && (
+                        <Typography color="error">
+                            Something went wrong!
+                        </Typography>
+                    )}
+                    {mailError && (
+                        <Typography color="error">
+                            This email was not found.
+                        </Typography>
+                    )}
+                </div>
+            )}
+            {step == 2 && (
+                <div
+                    className={classes.flexContainer}
+                    onChange={(e) => handleChange(e)}
+                >
+                    <Logo />
+                    <Typography variant="h3">Enter Your Reset Code</Typography>
+                    <Input
+                        className={classes.flexItem}
+                        name="resetCode"
+                        autoComplete="off"
+                        placeholder="reset code"
+                        type="text"
+                    ></Input>
+                    <Input
+                        className={classes.flexItem}
+                        name="newPassword"
+                        autoComplete="off"
+                        placeholder="your new password"
+                        type="text"
+                    ></Input>
+                    <Button
+                        className={classes.button}
+                        variant="contained"
+                        color="primary"
+                        onClick={submitResetCode}
+                    >
+                        SUBMIT
+                    </Button>
+                    {codeError && (
+                        <Typography color="error">
+                            The code you entered was invalid.
+                        </Typography>
+                    )}
+                </div>
+            )}
+            {step == 3 && (
+                <div className={classes.flexContainer}>
+                    <Typography variant="h2">Success!</Typography>
+                    <Link to="/login" className={classes.button}>
+                        <Button color="primary" variant="contained">
+                            Login with your new password
+                        </Button>
+                    </Link>
+                </div>
+            )}
+        </>
+    );
 }
