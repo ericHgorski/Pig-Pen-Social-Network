@@ -11,6 +11,7 @@ const useStyles = makeStyles(() => ({
         marginLeft: "10px",
         gridColumn: "1 / -1 ",
         fontSize: "15px",
+        maxWidth: "300px",
     },
     bioEditorContainer: {
         display: "grid",
@@ -24,13 +25,14 @@ const useStyles = makeStyles(() => ({
     },
 }));
 
-export default function BioEdtior(props) {
+export default function BioEditor(props) {
     const [editMode, setEditMode] = useState(false);
     const [draftBio, setDraftBio] = useState(null);
+    const [newBio, setNewBio] = useState(null);
     const classes = useStyles();
 
-    const onChangeHandler = (e) => {
-        setDraftBio(e.target.value);
+    const onChangeHandler = ({ target }) => {
+        setDraftBio(target.value);
     };
 
     async function setBio() {
@@ -38,7 +40,8 @@ export default function BioEdtior(props) {
         try {
             const { data } = await axios.post("/save-bio", { draftBio });
             if (data.success) {
-                setDraftBio(data.newBio);
+                setNewBio(data.newBio);
+                props.saveBio(data.newBio);
             }
         } catch (err) {
             console.log("Error in axios/post/save-bio: ", err);
@@ -47,60 +50,57 @@ export default function BioEdtior(props) {
 
     return (
         <>
-            <div>
-                {editMode ? (
-                    <div className={classes.bioEditorContainer}>
-                        <TextareaAutosize
-                            className={classes.textArea}
-                            name="draftBio"
-                            defaultValue={props.bio}
-                            onChange={onChangeHandler}
-                            rowsMin={8}
-                            placeholder="Max 500 characters"
-                        />
-                        <Button
-                            className={classes.buttons}
-                            variant="contained"
-                            color="primary"
-                            onClick={setBio}
-                        >
-                            SAVE BIO
-                        </Button>
-                        <Button
-                            className={classes.buttons}
-                            variant="contained"
-                            onClick={() => setEditMode(!editMode)}
-                        >
-                            CANCEL
-                        </Button>
-                    </div>
-                ) : props.bio ? (
-                    <Typography variant="h6">
-                        About me: {draftBio || props.bio}
-                        <br></br>
-                        <Button
-                            className={classes.buttons}
-                            variant="contained"
-                            color="primary"
-                            onClick={() => setEditMode(!editMode)}
-                        >
-                            EDIT BIO
-                        </Button>
-                    </Typography>
-                ) : (
-                    <div id="add-bio">
-                        <Button
-                            onClick={setBio}
-                            className={classes.buttons}
-                            variant="contained"
-                            color="primary"
-                            onClick={() => setEditMode(!editMode)}
-                        >
-                            ADD BIO
-                        </Button>
-                    </div>
-                )}
-            </div>
+            {editMode ? (
+                <div className={classes.bioEditorContainer}>
+                    <TextareaAutosize
+                        className={classes.textArea}
+                        name="draftBio"
+                        defaultValue={props.bio}
+                        onChange={onChangeHandler}
+                        rowsMin={8}
+                        placeholder="Max 500 characters"
+                    />
+                    <Button
+                        className={classes.buttons}
+                        variant="contained"
+                        color="primary"
+                        onClick={setBio}
+                    >
+                        SAVE BIO
+                    </Button>
+                    <Button
+                        className={classes.buttons}
+                        variant="contained"
+                        onClick={() => setEditMode(false)}
+                    >
+                        CANCEL
+                    </Button>
+                </div>
+            ) : props.bio ? (
+                <Typography variant="h6">
+                    About me: {newBio || props.bio}
+                    <br></br>
+                    <Button
+                        className={classes.buttons}
+                        variant="contained"
+                        color="primary"
+                        onClick={() => setEditMode(!editMode)}
+                    >
+                        EDIT BIO
+                    </Button>
+                </Typography>
+            ) : (
+                <>
+                    <Button
+                        onClick={setBio}
+                        className={classes.buttons}
+                        variant="contained"
+                        color="primary"
+                    >
+                        ADD BIO
+                    </Button>
+                </>
+            )}
         </>
     );
 }

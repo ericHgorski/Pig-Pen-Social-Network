@@ -5,7 +5,7 @@ import Button from "@material-ui/core/Button";
 import Input from "@material-ui/core/Input";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import Logo from "./logo";
+import LogoBig from "./logoBig";
 
 const useStyles = makeStyles(() => ({
     flexContainer: {
@@ -23,6 +23,11 @@ const useStyles = makeStyles(() => ({
     button: {
         marginTop: "20px",
         textDecoration: "none",
+    },
+    header: {
+        color: "black",
+        textShadow: "1px 1px 1px hotpink",
+        fontWeight: "lighter",
     },
 }));
 
@@ -67,14 +72,16 @@ export default function ResetPassword() {
                     className={classes.flexContainer}
                     onChange={(e) => handleChange(e)}
                 >
-                    <Logo />
+                    <LogoBig />
 
-                    <Typography variant="h2">Reset Your Password</Typography>
+                    <Typography className={classes.header} variant="h2">
+                        Reset Your Password
+                    </Typography>
 
                     <Input
                         className={classes.flexItem}
                         name="email"
-                        placeholder="email"
+                        placeholder="Your email"
                         type="email"
                     ></Input>
                     <Button
@@ -105,7 +112,7 @@ export default function ResetPassword() {
                     className={classes.flexContainer}
                     onChange={(e) => handleChange(e)}
                 >
-                    <Logo />
+                    <LogoBig />
                     <Typography variant="h3">Enter Your Reset Code</Typography>
                     <Input
                         className={classes.flexItem}

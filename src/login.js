@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "./axios";
 import { Link } from "react-router-dom";
-import Logo from "./logo";
+import LogoBig from "./logoBig";
 import Button from "@material-ui/core/Button";
 import Input from "@material-ui/core/Input";
 import Typography from "@material-ui/core/Typography";
@@ -21,6 +21,15 @@ const useStyles = makeStyles(() => ({
     button: {
         marginTop: "5px",
         textDecoration: "none",
+    },
+    tagLine: {
+        fontStyle: "italic",
+        color: "hotpink",
+        marginTop: "10px",
+    },
+    header: {
+        color: "black",
+        textShadow: "1px 1px 1px hotpink",
     },
 }));
 
@@ -48,8 +57,14 @@ export default function Login() {
             onChange={(e) => handleChange(e)}
             className={classes.flexContainer}
         >
-            <Logo />
-            <Typography variant="h2">Login</Typography>
+            <LogoBig />
+
+            <Typography className={classes.header} variant="h2">
+                Welcome to Pig Pen
+            </Typography>
+            <Typography className={classes.tagLine} variant="h6">
+                Where Friends of Pigs go Hog Wild
+            </Typography>
             {error && (
                 <Typography color="error">
                     Oops something went wrong!
@@ -59,14 +74,14 @@ export default function Login() {
                 className={classes.flexItem}
                 name="email"
                 autoComplete="off"
-                placeholder="email"
+                placeholder="Email"
                 type="email"
             />
             <Input
                 className={classes.flexItem}
                 name="password"
                 autoComplete="off"
-                placeholder="password"
+                placeholder="Password"
                 type="password"
             />
             <Button

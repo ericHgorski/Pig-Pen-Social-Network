@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import axios from "./axios";
 import Uploader from "./uploader";
 import Profile from "./profile";
+import Chat from "./chat";
 import OtherProfile from "./otherprofile";
 import FindPeople from "./findpeople";
 import Friends from "./friends";
@@ -78,6 +79,7 @@ export default class App extends Component {
                     />
                     <Route path="/users" render={() => <FindPeople />} />
                     <Route path="/friends" render={() => <Friends />} />
+                    <Route path="/chat" render={() => <Chat />} />
                 </>
             </BrowserRouter>
         );

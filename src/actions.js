@@ -27,3 +27,17 @@ export async function unfriend(otherId) {
         otherId,
     };
 }
+
+export async function recentPublicChat(msgs) {
+    console.log("msgs in recentPublicChat action :>> ", msgs);
+    return {
+        type: "GET_RECENT_PUBLIC_MESSAGES",
+        msgs,
+    };
+}
+export async function addPublicMessage(msg) {
+    return {
+        type: "ADD_PUBLIC_MESSAGE",
+        msg,
+    };
+}

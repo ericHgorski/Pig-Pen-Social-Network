@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "./axios";
 import { Link } from "react-router-dom";
-import Logo from "./logo";
+import LogoBig from "./logoBig";
 import Button from "@material-ui/core/Button";
 import Input from "@material-ui/core/Input";
 import Typography from "@material-ui/core/Typography";
@@ -18,9 +18,20 @@ const useStyles = makeStyles(() => ({
     flexItem: {
         marginTop: "30px",
     },
+    tagLine: {
+        // fontStyle: "italic",
+        color: "hotpink",
+        marginTop: "10px",
+        fontSize: "15px",
+    },
     login: {
         marginTop: "5px",
         textDecoration: "none",
+    },
+    header: {
+        color: "black",
+        // textShadow: "1px 1px 1px hotpink",
+        fontWeight: "lighter",
     },
 }));
 
@@ -48,9 +59,14 @@ export default function Registration() {
             onChange={(e) => handleChange(e)}
             className={classes.flexContainer}
         >
-            <Logo />
+            <LogoBig />
 
-            <Typography variant="h2">Register</Typography>
+            <Typography className={classes.header} variant="h2">
+                Join Pig Pen
+            </Typography>
+            <Typography className={classes.tagLine} variant="h6">
+                Where Friends of Pigs go Hog Wild
+            </Typography>
             {error && (
                 <Typography color="error">
                     Oops something went wrong!
@@ -60,28 +76,28 @@ export default function Registration() {
                 className={classes.flexItem}
                 name="first"
                 autoComplete="off"
-                placeholder="first name"
+                placeholder="First name"
                 type="text"
             />
             <Input
                 className={classes.flexItem}
                 name="last"
                 autoComplete="off"
-                placeholder="last name"
+                placeholder="Last name"
                 type="text"
             />
             <Input
                 className={classes.flexItem}
                 name="email"
                 autoComplete="off"
-                placeholder="email address"
+                placeholder="Email address"
                 type="email"
             />
             <Input
                 className={classes.flexItem}
                 name="password"
                 autoComplete="off"
-                placeholder="password"
+                placeholder="Password"
                 type="password"
             />
             <Button

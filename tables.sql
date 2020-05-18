@@ -27,3 +27,10 @@ CREATE TABLE reset_codes(
     code VARCHAR NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE messages(
+    messsage_id SERIAL PRIMARY KEY,
+    sender_id INT NOT NULL,
+    chat_message VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

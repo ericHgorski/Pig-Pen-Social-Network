@@ -15,16 +15,19 @@ const useStyles = makeStyles(() => ({
         flexWrap: "wrap",
     },
     user: {
-        border: "1px lightpink solid",
+        border: "2px lightpink solid",
+        boxSizing: "border-box",
         borderRadius: "10%",
         display: "flex",
         justifyContent: "center",
         width: "300px",
         margin: "15px",
         padding: "5px",
+        textAlign: "center",
         "&:hover": {
             backgroundColor: "lightpink",
             opacity: "0.8",
+            border: "black 2px solid",
         },
     },
     link: {
@@ -35,8 +38,13 @@ const useStyles = makeStyles(() => ({
         width: "200px",
         height: "200px",
     },
-    names: {
+    flexItem: {
+        display: "flex",
+        justifySelf: "center",
+    },
+    searchField: {
         textTransform: "capitalize",
+        width: "200px",
     },
 }));
 
@@ -65,6 +73,7 @@ export default function FindPeople() {
     return (
         <>
             <Input
+                className={classes.searchField}
                 placeholder="SEARCH FOR FRIENDS"
                 onChange={(e) => {
                     setSearch(e.target.value);

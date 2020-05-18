@@ -86,12 +86,14 @@ module.exports.getAllUserIds = () => {
     );
 };
 
-module.exports.getRecentUsers = () => {
+module.exports.getRecentUsers = (id) => {
     return db.query(
         `SELECT * FROM users 
+        WHERE id != $1
         ORDER BY id DESC 
         LIMIT 9;
-    `
+    `,
+        [id]
     );
 };
 
@@ -149,5 +151,23 @@ module.exports.getWantToBeFriends = (id) => {
       OR (accepted = true AND sender_id = $1 AND receiver_id = users.id)
   `,
         [id]
+    );
+};
+
+module.exports.getRecentPublicChat = () => {
+    return db.query(`
+    SELECT * FROM messages
+    JOIN users
+    ON (sender_id = users.id)
+    `);
+};
+
+module.exports.addNewPublicMessage = (id, chat_message) => {
+    return db.query(
+        `INSERT INTO messages (sender_id, chat_message) 
+        VALUES ($1, $2)
+        RETURNING * 
+        `,
+        [id, chat_message]
     );
 };

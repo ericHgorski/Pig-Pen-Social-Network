@@ -18,5 +18,21 @@ export default function reducer(state = {}, action) {
             ),
         };
     }
+    if (action.type == "GET_RECENT_PUBLIC_MESSAGES") {
+        console.log("action :>> ", action);
+        console.log("action.msgs :>> ", action.msgs);
+        state = {
+            ...state,
+            publicChatMessages: action.msgs,
+        };
+    }
+
+    if (action.type == "ADD_PUBLIC_MESSAGE") {
+        console.log("action :>> ", action);
+        state = {
+            ...state,
+            publicChatMessages: [...state.publicChatMessages, action.msg],
+        };
+    }
     return state;
 }

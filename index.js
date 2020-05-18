@@ -1,7 +1,9 @@
 const express = require("express");
-const app = express();
+const app = require("express")();
+const server = require("http").Server(app);
+const io = require("socket.io")(server);
 const compression = require("compression");
-const coookieSession = require("cookie-session");
+const cookieSession = require("cookie-session");
 const db = require("./db");
 const { hash, compare } = require("./bc");
 const csurf = require("csurf");
@@ -13,12 +15,17 @@ const s3 = require("./s3");
 app.use(compression());
 app.use(express.json());
 app.use(express.static("./public"));
-app.use(
-    coookieSession({
-        secret: "I'm always hungry",
-        maxAge: 1000 * 60 * 60 * 24 * 14,
-    })
-);
+
+const cookieSessionMiddleware = cookieSession({
+    secret: `I'm always hungry.`,
+    maxAge: 1000 * 60 * 60 * 24 * 90,
+});
+
+// Ensure cookie UserId information is still available with sockets
+app.use(cookieSessionMiddleware);
+io.use(function (socket, next) {
+    cookieSessionMiddleware(socket.request, socket.request.res, next);
+});
 
 app.use(csurf());
 
@@ -169,7 +176,7 @@ app.get("/api/users/:search", async (req, res) => {
     const query = req.params.search;
     if (query == "noSearch") {
         try {
-            const result = await db.getRecentUsers();
+            const result = await db.getRecentUsers(req.session.userId);
             res.json(result);
         } catch (err) {
             console.log("Error in get recent users app.get request: ", err);
@@ -285,6 +292,14 @@ app.get("/want-to-be-friends", async (req, res) => {
     }
 });
 
+// DELETE ACCOUNT FUNCTIONALITY
+// app.get("/delete-account", async (req, res) => {
+//     try {
+//     } catch (err) {
+//         console.log("error in app get delete account :>> ", err);
+//     }
+// });
+
 //Logout functionality.
 app.get("/logout", (req, res) => {
     req.session = null;
@@ -300,6 +315,36 @@ app.get("*", (req, res) => {
     }
 });
 
-app.listen(8080, () => {
-    console.log("I'm listening.");
+// Using server instead of app for socket.io integration.
+server.listen(8080, () => {
+    console.log("the server is listening on 8080");
+});
+
+// ======================== CHAT FUNCTIONALITY =====================
+
+// Route for chat functionality.
+io.on("connection", (socket) => {
+    console.log(`socket with id: ${socket.id} is now connected`);
+
+    if (!socket.request.session.userId) {
+        return socket.disconnect(true);
+    }
+
+    const userId = parseInt(socket.request.session.userId);
+
+    db.getRecentPublicChat().then(({ rows }) => {
+        socket.emit("recentPublicChat", rows);
+    });
+
+    socket.on("newPublicChatMessage", (newPublicMsg) => {
+        // Add the public message, then get userInfo for the sender
+        db.addNewPublicMessage(userId, newPublicMsg).then(({ rows }) => {
+            db.getUserInfo(rows[0].sender_id).then(({ rows }) => {
+                io.sockets.emit("addPublicChatMessage", {
+                    ...rows[0],
+                    chat_message: newPublicMsg,
+                });
+            });
+        });
+    });
 });
