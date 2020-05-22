@@ -29,7 +29,6 @@ const useStyles = makeStyles(() => ({
     },
     header: {
         color: "black",
-        textShadow: "1px 1px 1px hotpink",
     },
 }));
 
@@ -96,7 +95,7 @@ export default function Login() {
                 <Button> Register</Button>
             </Link>
             <Link to="/reset/start" className={classes.button}>
-                <Button>Forgot your password?</Button>
+                <Button> Forgot my password</Button>
             </Link>
         </div>
     );

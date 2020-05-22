@@ -293,12 +293,20 @@ app.get("/want-to-be-friends", async (req, res) => {
 });
 
 // DELETE ACCOUNT FUNCTIONALITY
-// app.get("/delete-account", async (req, res) => {
-//     try {
-//     } catch (err) {
-//         console.log("error in app get delete account :>> ", err);
-//     }
-// });
+app.get("/delete-account", (req, res) => {
+    const { userId } = req.session;
+    try {
+        db.deleteFriendships(userId).then(() => {
+            db.deleteUser(userId).then(() => {
+                db.deleteMessages(userId).then(() => {
+                    res.json({ success: true });
+                });
+            });
+        });
+    } catch (err) {
+        console.log("error in app get delete account :>> ", err);
+    }
+});
 
 //Logout functionality.
 app.get("/logout", (req, res) => {
@@ -324,8 +332,6 @@ server.listen(8080, () => {
 
 // Route for chat functionality.
 io.on("connection", (socket) => {
-    console.log(`socket with id: ${socket.id} is now connected`);
-
     if (!socket.request.session.userId) {
         return socket.disconnect(true);
     }
@@ -339,10 +345,13 @@ io.on("connection", (socket) => {
     socket.on("newPublicChatMessage", (newPublicMsg) => {
         // Add the public message, then get userInfo for the sender
         db.addNewPublicMessage(userId, newPublicMsg).then(({ rows }) => {
-            db.getUserInfo(rows[0].sender_id).then(({ rows }) => {
+            const senderId = rows[0].sender_id;
+            const timestamp = rows[0].created_at;
+            db.getUserInfo(senderId).then(({ rows }) => {
                 io.sockets.emit("addPublicChatMessage", {
                     ...rows[0],
                     chat_message: newPublicMsg,
+                    created_at: timestamp,
                 });
             });
         });

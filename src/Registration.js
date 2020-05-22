@@ -15,11 +15,13 @@ const useStyles = makeStyles(() => ({
         width: "100%",
         margin: "20px",
     },
+    "& input:invalid": {
+        border: "2px dashed red",
+    },
     flexItem: {
         marginTop: "30px",
     },
     tagLine: {
-        // fontStyle: "italic",
         color: "hotpink",
         marginTop: "10px",
         fontSize: "15px",
@@ -30,7 +32,6 @@ const useStyles = makeStyles(() => ({
     },
     header: {
         color: "black",
-        // textShadow: "1px 1px 1px hotpink",
         fontWeight: "lighter",
     },
 }));

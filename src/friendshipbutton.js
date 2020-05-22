@@ -30,14 +30,6 @@ export default function FriendshipButton({ otherId }) {
                 console.log("Error in axios.post /friendship: ", err);
             });
     }
-    // useEffect(() => {
-    //     console.log("buttonText :>> ", buttonText);
-    //     console.log(buttonText == "UNFRIEND" ? "secondary" : "secondary");
-
-    //     if (!buttonText) {
-    //         return null;
-    //     }
-    // }, []);
 
     // FIGURE OUT WAY TO MAKE BUTTON COLOR CHANGE DEPENDING ON BUTTON TEXT
     return (

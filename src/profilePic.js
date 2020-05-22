@@ -8,7 +8,7 @@ export default function ProfilePic({ first, last, image_url, toggleUploader }) {
     return (
         <div>
             <img
-                width="200"
+                width="400"
                 alt={`${first} ${last}`}
                 className="profile-pic"
                 src={image_url}

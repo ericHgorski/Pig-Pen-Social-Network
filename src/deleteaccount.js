@@ -10,23 +10,42 @@ const useStyles = makeStyles(() => ({
         bottom: "0",
         right: "0",
     },
+    link: {
+        textDecoration: "none",
+        color: "red",
+    },
 }));
 
 export default function DeleteAccount() {
     const classes = useStyles();
-    async function deleteAccount() {
-        try {
-            const { data } = await axios.get("/delete-account");
-            console.log("data from delete account :>> ", data);
-        } catch (err) {
-            console.log("Error in axios/get/delete-account: ", err);
-        }
+
+    function deleteAccount() {
+        alert("Your account was successfully deleted. Click 'OK' to continue.");
+        axios
+            .get("/delete-account")
+            .then(({ data }) => {
+                if (data.success) {
+                    console.log("successful account deletion.");
+                }
+            })
+            .catch((err) => {
+                console.log(
+                    "There was an error when trying to delete your account: ",
+                    err
+                );
+            });
     }
 
     return (
         <>
-            <Button className={classes.deleteButton} color="secondary">
-                DELETE MY ACCOUNT
+            <Button
+                onClick={deleteAccount}
+                className={classes.deleteButton}
+                color="secondary"
+            >
+                <a className={classes.link} href="/logout">
+                    DELETE MY ACCOUNT
+                </a>
             </Button>
         </>
     );

@@ -4,16 +4,29 @@ import BioEditor from "./bioeditor";
 import DeleteAccount from "./deleteaccount";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles(() => ({
+    flexContainer: {
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        width: "100%",
+        margin: "20px",
+        flexWrap: "wrap",
+    },
+}));
 
 export default function Profile(props) {
-    console.log("props :>> ", props);
+    const classes = useStyles();
+
     // Wait until userInfo is defined before rendering.
     if (!props.userInfo) {
         return null;
     }
     const { first, last, image_url, bio } = props.userInfo;
     return (
-        <>
+        <div className={classes.flexContainer}>
             <Typography variant="h2">
                 Welcome {first} {last}
             </Typography>
@@ -27,10 +40,9 @@ export default function Profile(props) {
             {!image_url && (
                 <Button
                     onClick={() => props.toggleUploader()}
-                    style={{ margin: "10px" }}
                     variant="contained"
                 >
-                    Add a new photo
+                    Upload your first profile picture
                 </Button>
             )}
 
@@ -38,6 +50,6 @@ export default function Profile(props) {
                 <BioEditor saveBio={props.saveBio} bio={bio} />
             )}
             <DeleteAccount />
-        </>
+        </div>
     );
 }

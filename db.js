@@ -156,7 +156,10 @@ module.exports.getWantToBeFriends = (id) => {
 
 module.exports.getRecentPublicChat = () => {
     return db.query(`
-    SELECT * FROM messages
+    SELECT messages.created_at, messages.sender_id, 
+    messages.chat_message, users.id, users.first, users.last,
+    users.image_url 
+    FROM messages
     JOIN users
     ON (sender_id = users.id)
     `);
@@ -169,5 +172,30 @@ module.exports.addNewPublicMessage = (id, chat_message) => {
         RETURNING * 
         `,
         [id, chat_message]
+    );
+};
+module.exports.deleteUser = (id) => {
+    return db.query(
+        `DELETE FROM users 
+        WHERE id = $1  
+        `,
+        [id]
+    );
+};
+module.exports.deleteFriendships = (id) => {
+    return db.query(
+        `DELETE FROM friendships 
+        WHERE sender_id = $1 
+        OR receiver_id = $1  
+        `,
+        [id]
+    );
+};
+module.exports.deleteMessages = (id) => {
+    return db.query(
+        `DELETE FROM messages 
+        WHERE sender_id = $1  
+        `,
+        [id]
     );
 };

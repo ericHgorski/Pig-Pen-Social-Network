@@ -26,7 +26,7 @@ const useStyles = makeStyles(() => ({
     },
     header: {
         color: "black",
-        textShadow: "1px 1px 1px hotpink",
+        // textShadow: "1px 1px 1px hotpink",
         fontWeight: "lighter",
     },
 }));

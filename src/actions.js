@@ -29,7 +29,6 @@ export async function unfriend(otherId) {
 }
 
 export async function recentPublicChat(msgs) {
-    console.log("msgs in recentPublicChat action :>> ", msgs);
     return {
         type: "GET_RECENT_PUBLIC_MESSAGES",
         msgs,

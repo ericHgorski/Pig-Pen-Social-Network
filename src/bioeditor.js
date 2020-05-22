@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "./axios";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
@@ -12,6 +12,7 @@ const useStyles = makeStyles(() => ({
         gridColumn: "1 / -1 ",
         fontSize: "15px",
         maxWidth: "300px",
+        resize: "none",
     },
     bioEditorContainer: {
         display: "grid",
@@ -22,6 +23,10 @@ const useStyles = makeStyles(() => ({
     buttons: {
         marginLeft: "10px",
         gridRow: 2,
+    },
+    editButton: {
+        marginLeft: "43px",
+        marginTop: "20px",
     },
 }));
 
@@ -81,7 +86,7 @@ export default function BioEditor(props) {
                     About me: {newBio || props.bio}
                     <br></br>
                     <Button
-                        className={classes.buttons}
+                        className={classes.editButton}
                         variant="contained"
                         color="primary"
                         onClick={() => setEditMode(!editMode)}

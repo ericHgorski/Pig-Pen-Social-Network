@@ -9,16 +9,19 @@ import { Link } from "react-router-dom";
 
 const useStyles = makeStyles(() => ({
     user: {
-        border: "1px lightpink solid",
+        border: "2px lightgrey solid",
+        boxSizing: "border-box",
         borderRadius: "10%",
         display: "flex",
         justifyContent: "center",
         width: "300px",
         margin: "15px",
         padding: "5px",
+        textAlign: "center",
         "&:hover": {
-            backgroundColor: "lightpink",
+            backgroundColor: "#FFA8A9",
             opacity: "0.8",
+            border: "black 2px solid",
         },
     },
     link: {
@@ -28,6 +31,16 @@ const useStyles = makeStyles(() => ({
     avatar: {
         width: "200px",
         height: "200px",
+    },
+    flexContainer: {
+        display: "flex",
+        alignItems: "center",
+        margin: "20px",
+        flexWrap: "wrap",
+        justifyContent: "center",
+    },
+    header: {
+        color: "#A14A76",
     },
 }));
 
@@ -56,19 +69,26 @@ export default function Friends() {
     return (
         <>
             {wantToBeFriends.length == 0 && alreadyFriends.length == 0 && (
-                <Typography variant="h5">
-                    Rats! You don't have any friends yet. Check out the Find
-                    People page to get started.
-                </Typography>
+                <div className={classes.flexContainer}>
+                    <Typography variant="h5">
+                        Rats! You don't have any friends yet. Check out the
+                        <Link to="/users"> Find People page</Link> to get
+                        started.
+                    </Typography>
+                </div>
             )}
             {wantToBeFriends.length != 0 && (
-                <Typography variant="h5"> WANT TO BE FRIENDS </Typography>
+                <div className={classes.flexContainer}>
+                    <Typography className={classes.header} variant="h5">
+                        Pending Friend Requests
+                    </Typography>
+                </div>
             )}
             {wantToBeFriends.map((user) => (
-                <>
+                <div className={classes.flexContainer}>
                     <div className={classes.user} key={user.id}>
                         <Link className={classes.link} to={`/user/${user.id}`}>
-                            <Typography variant="h3">
+                            <Typography variant="h5">
                                 {user.first} {user.last}
                             </Typography>
                             <Avatar
@@ -80,13 +100,17 @@ export default function Friends() {
                     <Button onClick={() => dispatch(acceptFriend(user.id))}>
                         Accept Friend Request
                     </Button>
-                </>
+                </div>
             ))}
             {alreadyFriends.length != 0 && (
-                <Typography variant="h5"> ALREADY FRIENDS </Typography>
+                <div className={classes.flexContainer}>
+                    <Typography className={classes.header} variant="h5">
+                        Your Friends
+                    </Typography>
+                </div>
             )}
             {alreadyFriends.map((user) => (
-                <>
+                <div className={classes.flexContainer}>
                     <div className={classes.user} key={user.id}>
                         <Link className={classes.link} to={`/user/${user.id}`}>
                             <Typography variant="h3">
@@ -101,7 +125,7 @@ export default function Friends() {
                     <Button onClick={() => dispatch(unfriend(user.id))}>
                         Unfriend
                     </Button>
-                </>
+                </div>
             ))}
         </>
     );

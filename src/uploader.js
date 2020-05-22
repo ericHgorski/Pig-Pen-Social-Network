@@ -36,8 +36,16 @@ export default class Uploader extends Component {
 
     render() {
         return (
-            <div>
-                <Input
+            <div
+                style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    border: "pink dotted 3px",
+                    padding: "30px",
+                }}
+            >
+                <input
+                    style={{ width: "300px" }}
                     type="file"
                     name="file"
                     accept="image/*"
