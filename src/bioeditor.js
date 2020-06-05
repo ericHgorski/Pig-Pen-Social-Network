@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+mport React, { useState } from "react";
 import axios from "./axios";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
@@ -25,7 +25,7 @@ const useStyles = makeStyles(() => ({
         gridRow: 2,
     },
     editButton: {
-        marginLeft: "43px",
+        marginLeft: "46%",
         marginTop: "20px",
     },
 }));
@@ -109,3 +109,4 @@ export default function BioEditor(props) {
         </>
     );
 }
+
