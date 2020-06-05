@@ -331,7 +331,7 @@ app.get("*", (req, res) => {
 });
 
 // Using server instead of app for socket.io integration.
-server.listen(8080, () => {
+server.listen(process.env.PORT || 8080, () => {
     console.log("the server is listening on 8080");
 });
 
