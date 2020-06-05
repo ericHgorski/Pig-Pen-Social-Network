@@ -117,6 +117,13 @@ app.post("/login", (req, res) => {
         });
 });
 
+// Guest user route for portfolio viewers.
+
+app.get("/guest-user", (req, res) => {
+    req.session.userId = Math.floor(Math.random() * 110) + 1;
+    res.json({ success: true });
+});
+
 // Begin the  password reset route.
 app.post("/reset/start", (req, res) => {
     let resetCode;

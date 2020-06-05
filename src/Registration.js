@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "./axios";
 import { Link } from "react-router-dom";
-import LogoBig from "./logoBig";
+import LogoBig from "./LogoBig";
 import Button from "@material-ui/core/Button";
 import Input from "@material-ui/core/Input";
 import Typography from "@material-ui/core/Typography";
@@ -47,6 +47,16 @@ export default function Registration() {
 
     const submitRegistration = () => {
         axios.post("/register", fields).then(({ data }) => {
+            if (data.success) {
+                location.replace("/");
+            } else {
+                setError(true);
+            }
+        });
+    };
+
+    const guestUser = () => {
+        axios.get("/guest-user").then(({ data }) => {
             if (data.success) {
                 location.replace("/");
             } else {
@@ -108,6 +118,13 @@ export default function Registration() {
                 onClick={submitRegistration}
             >
                 Register
+            </Button>
+            <Button
+                className={classes.flexItem}
+                color="primary"
+                onClick={guestUser}
+            >
+                Guest User
             </Button>
             <Link to="/login" className={classes.login}>
                 <Button>Login</Button>

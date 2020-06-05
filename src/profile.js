@@ -1,7 +1,7 @@
 import React from "react";
-import ProfilePic from "./profilepic";
-import BioEditor from "./bioeditor";
-import DeleteAccount from "./deleteaccount";
+import ProfilePic from "./ProfilePic";
+import BioEditor from "./BioEditor";
+import DeleteAccount from "./DeleteAccount";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";

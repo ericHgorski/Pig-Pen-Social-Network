@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import axios from "./axios";
-import Uploader from "./uploader";
-import Profile from "./profile";
-import Chat from "./chat";
-import OtherProfile from "./otherprofile";
-import FindPeople from "./findpeople";
-import Friends from "./friends";
-import Navbar from "./navbar";
+import Uploader from "./Uploader";
+import Profile from "./Profile";
+import Chat from "./Chat";
+import OtherProfile from "./OtherProfile";
+import FindPeople from "./FindPeople";
+import Friends from "./Friends";
+import Navbar from "./Navbar";
 import { BrowserRouter, Route } from "react-router-dom";
 
 export default class App extends Component {

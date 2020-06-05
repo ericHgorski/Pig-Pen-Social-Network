@@ -1,8 +1,8 @@
 import React from "react";
 import Registration from "./registration";
 import { HashRouter, Route } from "react-router-dom";
-import Login from "./login";
-import ResetPassword from "./reset";
+import Login from "./Login";
+import ResetPassword from "./Reset";
 
 export default function Welcome() {
     return (
