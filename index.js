@@ -1,7 +1,9 @@
 const express = require("express");
 const app = require("express")();
 const server = require("http").Server(app);
-const io = require("socket.io")(server);
+const io = require("socket.io")(server, {
+    origins: "localhost:8080 https://the-pig-pen.herokuapp.com/",
+});
 const compression = require("compression");
 const cookieSession = require("cookie-session");
 const db = require("./db");
