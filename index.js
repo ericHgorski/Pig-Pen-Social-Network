@@ -139,7 +139,7 @@ app.post("/reset/start", (req, res) => {
                     sendEmail(
                         email,
                         `Your reset code is ${resetCode}. It expires in 10 minutes.`,
-                        "BookFace Reset Code"
+                        "Pig Pen Reset Code"
                     ).then(() => res.json({ success: true }))
                 )
                 .catch((err) => {
